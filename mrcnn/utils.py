@@ -1023,7 +1023,44 @@ def get_resnet50_weights():
                             md5_hash='a268eb855778b3df3c7506639542a6af')
     return weights_path
 
-def load_weights(model, filepath, by_name=False, exclude=None):
+import re
+import datetime
+def set_log_dir(args, config, model_path=None):
+    """Sets the model log directory and epoch counter.
+
+    model_path: If None, or a format different from what this code uses
+        then set a new log directory and start epochs from 0. Otherwise,
+        extract the log directory and the epoch counter from the file
+        name.
+    """
+    # Set date and epoch counter as if starting a new model
+    args.epoch = 0
+    now = datetime.datetime.now()
+
+    # If we have a model path with date and epochs use them
+    if model_path:
+        # Continue from we left of. Get epoch and date from the file name
+        # A sample model path might look like:
+        # \path\to\logs\coco20171029T2315\mask_rcnn_coco_0001.h5 (Windows)
+        # /path/to/logs/coco20171029T2315/mask_rcnn_coco_0001.h5 (Linux)
+        regex = r".*[/\\][\w-]+(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})[/\\]mask\_rcnn\_[\w-]+(\d{4})\.h5"
+        m = re.match(regex, model_path)
+        if m:
+            now = datetime.datetime(int(m.group(1)), int(m.group(2)), int(m.group(3)),
+                                    int(m.group(4)), int(m.group(5)))
+            # Epoch number in file is 1-based, and in Keras code it's 0-based.
+            # So, adjust for that then increment by one to start from the next epoch
+            args.epoch = int(m.group(6)) - 1 + 1
+            print('Re-starting from epoch %d' % args.epoch)
+
+    # Directory for training logs
+    args.log_dir = os.path.join(args.model_dir, "{}{:%Y%m%dT%H%M}".format(config.NAME.lower(), now))
+
+    # Path to save after each epoch. Include placeholders that get filled by Keras.
+    args.checkpoint_path = os.path.join(args.log_dir, "mask_rcnn_{}_*epoch*.h5".format(config.NAME.lower()))
+    args.checkpoint_path = args.checkpoint_path.replace("*epoch*", "{epoch:04d}")
+
+def load_weights(model, filepath, args, config, by_name=False, exclude=None):
     """Modified version of the corresponding Keras function with
     the addition of multi-GPU support and the ability to exclude
     some layers from loading.
@@ -1063,7 +1100,7 @@ def load_weights(model, filepath, by_name=False, exclude=None):
         f.close()
 
     # Update the log directory
-    set_log_dir(filepath)
+    set_log_dir(args, config, filepath)
 
 def norm_boxes(boxes, shape):
     """Converts boxes from pixel coordinates to normalized coordinates.
