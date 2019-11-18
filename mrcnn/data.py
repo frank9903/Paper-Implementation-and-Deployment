@@ -9,6 +9,9 @@ import skimage.color
 import skimage.io
 import skimage.transform
 import warnings
+import tensorflow as tf
+from distutils.version import LooseVersion
+import utils
 
 from pycocotools.coco import COCO
 from pycocotools.cocoeval import COCOeval
@@ -363,7 +366,7 @@ def unmold_mask(mask, bbox, image_shape):
 ############################################################
 
 class CocoDataset(Dataset):
-    def load_coco(self, dataset_dir, subset, year=DEFAULT_DATASET_YEAR, class_ids=None, return_coco=False):
+    def load_coco(self, dataset_dir, subset, year="2014", class_ids=None, return_coco=False):
         """Load a subset of the COCO dataset.
         dataset_dir: The root directory of the COCO dataset.
         subset: What to load (train, val, minival, valminusminival)
@@ -1289,7 +1292,7 @@ def data_generator(dataset, config, shuffle=True, augment=False, augmentation=No
 
     # Anchors
     # [anchor_count, (y1, x1, y2, x2)]
-    backbone_shapes = compute_backbone_shapes(config, config.IMAGE_SHAPE)
+    backbone_shapes = utils.compute_backbone_shapes(config, config.IMAGE_SHAPE)
     anchors = generate_pyramid_anchors(config.RPN_ANCHOR_SCALES,
                                              config.RPN_ANCHOR_RATIOS,
                                              backbone_shapes,
