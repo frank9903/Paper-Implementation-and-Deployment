@@ -800,7 +800,134 @@ def generate_pyramid_anchors(scales, ratios, feature_shapes, feature_strides,
 
 
 ############################################################
-#  Miscellaneous
+#  Logging
+############################################################
+
+def log(text, array=None):
+    """Prints a text message. And, optionally, if a Numpy array is provided it
+    prints it's shape, min, and max values.
+    """
+    if array is not None:
+        text = text.ljust(25)
+        text += ("shape: {:20}  ".format(str(array.shape)))
+        if array.size:
+            text += ("min: {:10.5f}  max: {:10.5f}".format(array.min(),array.max()))
+        else:
+            text += ("min: {:10}  max: {:10}".format("",""))
+        text += "  {}".format(array.dtype)
+    print(text)
+
+import re
+import datetime
+def set_log_dir(args, config, model_path=None):
+    """Sets the model log directory and epoch counter.
+
+    model_path: If None, or a format different from what this code uses
+        then set a new log directory and start epochs from 0. Otherwise,
+        extract the log directory and the epoch counter from the file
+        name.
+    """
+    # Set date and epoch counter as if starting a new model
+    args.epoch = 0
+    now = datetime.datetime.now()
+
+    # If we have a model path with date and epochs use them
+    if model_path:
+        # Continue from we left of. Get epoch and date from the file name
+        # A sample model path might look like:
+        # \path\to\logs\coco20171029T2315\mask_rcnn_coco_0001.h5 (Windows)
+        # /path/to/logs/coco20171029T2315/mask_rcnn_coco_0001.h5 (Linux)
+        regex = r".*[/\\][\w-]+(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})[/\\]mask\_rcnn\_[\w-]+(\d{4})\.h5"
+        m = re.match(regex, model_path)
+        if m:
+            now = datetime.datetime(int(m.group(1)), int(m.group(2)), int(m.group(3)),
+                                    int(m.group(4)), int(m.group(5)))
+            # Epoch number in file is 1-based, and in Keras code it's 0-based.
+            # So, adjust for that then increment by one to start from the next epoch
+            args.epoch = int(m.group(6)) - 1 + 1
+            print('Re-starting from epoch %d' % args.epoch)
+
+    # Directory for training logs
+    args.log_dir = os.path.join(args.model_dir, "{}{:%Y%m%dT%H%M}".format(config.NAME.lower(), now))
+
+    # Path to save after each epoch. Include placeholders that get filled by Keras.
+    args.checkpoint_path = os.path.join(args.log_dir, "mask_rcnn_{}_*epoch*.h5".format(config.NAME.lower()))
+    args.checkpoint_path = args.checkpoint_path.replace("*epoch*", "{epoch:04d}")
+
+############################################################
+#  Weight load and download
+############################################################
+
+def download_trained_weights(coco_model_path, verbose=1):
+    """Download COCO trained weights from Releases.
+
+    coco_model_path: local path of COCO trained weights
+    """
+    if verbose > 0:
+        print("Downloading pretrained model to " + coco_model_path + " ...")
+    with urllib.request.urlopen(COCO_MODEL_URL) as resp, open(coco_model_path, 'wb') as out:
+        shutil.copyfileobj(resp, out)
+    if verbose > 0:
+        print("... done downloading pretrained model!")
+
+def get_resnet50_weights():
+    """Downloads ImageNet trained weights from Keras.
+    Returns path to weights file.
+    """
+    from keras.utils.data_utils import get_file
+    TF_WEIGHTS_PATH_NO_TOP = 'https://github.com/fchollet/deep-learning-models/'\
+                                'releases/download/v0.2/'\
+                                'resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5'
+    weights_path = get_file('resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5',
+                            TF_WEIGHTS_PATH_NO_TOP,
+                            cache_subdir='models',
+                            md5_hash='a268eb855778b3df3c7506639542a6af')
+    return weights_path
+
+def load_weights(model, filepath, args, config, by_name=False, exclude=None):
+    """Modified version of the corresponding Keras function with
+    the addition of multi-GPU support and the ability to exclude
+    some layers from loading.
+    exclude: list of layer names to exclude
+    """
+    import h5py
+    # Conditional import to support versions of Keras before 2.2
+    # TODO: remove in about 6 months (end of 2018)
+    try:
+        from keras.engine import saving
+    except ImportError:
+        # Keras before 2.2 used the 'topology' namespace.
+        from keras.engine import topology as saving
+
+    if exclude:
+        by_name = True
+
+    if h5py is None:
+        raise ImportError('`load_weights` requires h5py.')
+    f = h5py.File(filepath, mode='r')
+    if 'layer_names' not in f.attrs and 'model_weights' in f:
+        f = f['model_weights']
+
+    # In multi-GPU training, we wrap the model. Get layers
+    # of the inner model because they have the weights.
+    layers = model.inner_model.layers if hasattr(model, "inner_model") else model.layers
+
+    # Exclude some layers
+    if exclude:
+        layers = filter(lambda l: l.name not in exclude, layers)
+
+    if by_name:
+        saving.load_weights_from_hdf5_group_by_name(f, layers)
+    else:
+        saving.load_weights_from_hdf5_group(f, layers)
+    if hasattr(f, 'close'):
+        f.close()
+
+    # Update the log directory
+    set_log_dir(args, config, filepath)
+
+############################################################
+#  Accurancy
 ############################################################
 
 def trim_zeros(x):
@@ -953,6 +1080,34 @@ def compute_recall(pred_boxes, gt_boxes, iou):
     return recall, positive_ids
 
 
+############################################################
+#  Miscellaneous
+############################################################
+
+def parse_image_meta_graph(meta):
+    """Parses a tensor that contains image attributes to its components.
+    See compose_image_meta() for more details.
+
+    meta: [batch, meta length] where meta length depends on NUM_CLASSES
+
+    Returns a dict of the parsed tensors.
+    """
+    image_id = meta[:, 0]
+    original_image_shape = meta[:, 1:4]
+    image_shape = meta[:, 4:7]
+    window = meta[:, 7:11]  # (y1, x1, y2, x2) window of image in in pixels
+    scale = meta[:, 11]
+    active_class_ids = meta[:, 12:]
+    return {
+        "image_id": image_id,
+        "original_image_shape": original_image_shape,
+        "image_shape": image_shape,
+        "window": window,
+        "scale": scale,
+        "active_class_ids": active_class_ids,
+    }
+
+
 # ## Batch Slicing
 # Some custom layers support a batch size of 1 only, and require a lot of work
 # to support batches greater than 1. This function slices an input tensor
@@ -995,112 +1150,6 @@ def batch_slice(inputs, graph_fn, batch_size, names=None):
         result = result[0]
 
     return result
-
-
-def download_trained_weights(coco_model_path, verbose=1):
-    """Download COCO trained weights from Releases.
-
-    coco_model_path: local path of COCO trained weights
-    """
-    if verbose > 0:
-        print("Downloading pretrained model to " + coco_model_path + " ...")
-    with urllib.request.urlopen(COCO_MODEL_URL) as resp, open(coco_model_path, 'wb') as out:
-        shutil.copyfileobj(resp, out)
-    if verbose > 0:
-        print("... done downloading pretrained model!")
-
-def get_resnet50_weights():
-    """Downloads ImageNet trained weights from Keras.
-    Returns path to weights file.
-    """
-    from keras.utils.data_utils import get_file
-    TF_WEIGHTS_PATH_NO_TOP = 'https://github.com/fchollet/deep-learning-models/'\
-                                'releases/download/v0.2/'\
-                                'resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5'
-    weights_path = get_file('resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5',
-                            TF_WEIGHTS_PATH_NO_TOP,
-                            cache_subdir='models',
-                            md5_hash='a268eb855778b3df3c7506639542a6af')
-    return weights_path
-
-import re
-import datetime
-def set_log_dir(args, config, model_path=None):
-    """Sets the model log directory and epoch counter.
-
-    model_path: If None, or a format different from what this code uses
-        then set a new log directory and start epochs from 0. Otherwise,
-        extract the log directory and the epoch counter from the file
-        name.
-    """
-    # Set date and epoch counter as if starting a new model
-    args.epoch = 0
-    now = datetime.datetime.now()
-
-    # If we have a model path with date and epochs use them
-    if model_path:
-        # Continue from we left of. Get epoch and date from the file name
-        # A sample model path might look like:
-        # \path\to\logs\coco20171029T2315\mask_rcnn_coco_0001.h5 (Windows)
-        # /path/to/logs/coco20171029T2315/mask_rcnn_coco_0001.h5 (Linux)
-        regex = r".*[/\\][\w-]+(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})[/\\]mask\_rcnn\_[\w-]+(\d{4})\.h5"
-        m = re.match(regex, model_path)
-        if m:
-            now = datetime.datetime(int(m.group(1)), int(m.group(2)), int(m.group(3)),
-                                    int(m.group(4)), int(m.group(5)))
-            # Epoch number in file is 1-based, and in Keras code it's 0-based.
-            # So, adjust for that then increment by one to start from the next epoch
-            args.epoch = int(m.group(6)) - 1 + 1
-            print('Re-starting from epoch %d' % args.epoch)
-
-    # Directory for training logs
-    args.log_dir = os.path.join(args.model_dir, "{}{:%Y%m%dT%H%M}".format(config.NAME.lower(), now))
-
-    # Path to save after each epoch. Include placeholders that get filled by Keras.
-    args.checkpoint_path = os.path.join(args.log_dir, "mask_rcnn_{}_*epoch*.h5".format(config.NAME.lower()))
-    args.checkpoint_path = args.checkpoint_path.replace("*epoch*", "{epoch:04d}")
-
-def load_weights(model, filepath, args, config, by_name=False, exclude=None):
-    """Modified version of the corresponding Keras function with
-    the addition of multi-GPU support and the ability to exclude
-    some layers from loading.
-    exclude: list of layer names to exclude
-    """
-    import h5py
-    # Conditional import to support versions of Keras before 2.2
-    # TODO: remove in about 6 months (end of 2018)
-    try:
-        from keras.engine import saving
-    except ImportError:
-        # Keras before 2.2 used the 'topology' namespace.
-        from keras.engine import topology as saving
-
-    if exclude:
-        by_name = True
-
-    if h5py is None:
-        raise ImportError('`load_weights` requires h5py.')
-    f = h5py.File(filepath, mode='r')
-    if 'layer_names' not in f.attrs and 'model_weights' in f:
-        f = f['model_weights']
-
-    # In multi-GPU training, we wrap the model. Get layers
-    # of the inner model because they have the weights.
-    layers = model.inner_model.layers if hasattr(model, "inner_model") else model.layers
-
-    # Exclude some layers
-    if exclude:
-        layers = filter(lambda l: l.name not in exclude, layers)
-
-    if by_name:
-        saving.load_weights_from_hdf5_group_by_name(f, layers)
-    else:
-        saving.load_weights_from_hdf5_group(f, layers)
-    if hasattr(f, 'close'):
-        f.close()
-
-    # Update the log directory
-    set_log_dir(args, config, filepath)
 
 def norm_boxes(boxes, shape):
     """Converts boxes from pixel coordinates to normalized coordinates.
