@@ -23,7 +23,7 @@ import keras.layers as KL
 import keras.engine as KE
 import keras.models as KM
 
-from mrcnn import utils
+from mrcnn import utils, data
 
 # Requires TensorFlow 1.3+ and Keras 2.0.8+.
 from distutils.version import LooseVersion
@@ -571,7 +571,7 @@ def detection_targets_graph(proposals, gt_class_ids, gt_boxes, gt_masks, config)
     roi_gt_class_ids = tf.gather(gt_class_ids, roi_gt_box_assignment)
 
     # Compute bbox refinement for positive ROIs
-    deltas = utils.box_refinement_graph(positive_rois, roi_gt_boxes)
+    deltas = data.box_refinement_graph(positive_rois, roi_gt_boxes)
     deltas /= config.BBOX_STD_DEV
 
     # Assign positive ROIs to GT masks
@@ -1211,13 +1211,13 @@ def load_image_gt(dataset, config, image_id, augment=False, augmentation=None,
     image = dataset.load_image(image_id)
     mask, class_ids = dataset.load_mask(image_id)
     original_shape = image.shape
-    image, window, scale, padding, crop = utils.resize_image(
+    image, window, scale, padding, crop = data.resize_image(
         image,
         min_dim=config.IMAGE_MIN_DIM,
         min_scale=config.IMAGE_MIN_SCALE,
         max_dim=config.IMAGE_MAX_DIM,
         mode=config.IMAGE_RESIZE_MODE)
-    mask = utils.resize_mask(mask, scale, padding, crop)
+    mask = data.resize_mask(mask, scale, padding, crop)
 
     # Random horizontal flips.
     # TODO: will be removed in a future update in favor of augmentation
@@ -1266,7 +1266,7 @@ def load_image_gt(dataset, config, image_id, augment=False, augmentation=None,
     # Bounding boxes. Note that some boxes might be all zeros
     # if the corresponding mask got cropped out.
     # bbox: [num_instances, (y1, x1, y2, x2)]
-    bbox = utils.extract_bboxes(mask)
+    bbox = data.extract_bboxes(mask)
 
     # Active classes
     # Different datasets have different classes, so track the
@@ -1277,7 +1277,7 @@ def load_image_gt(dataset, config, image_id, augment=False, augmentation=None,
 
     # Resize masks to smaller size to reduce memory usage
     if use_mini_mask:
-        mask = utils.minimize_mask(bbox, mask, config.MINI_MASK_SHAPE)
+        mask = data.minimize_mask(bbox, mask, config.MINI_MASK_SHAPE)
 
     # Image meta data
     image_meta = compose_image_meta(image_id, original_shape, image.shape,
@@ -1334,7 +1334,7 @@ def build_detection_targets(rpn_rois, gt_class_ids, gt_boxes, gt_masks, config):
     overlaps = np.zeros((rpn_rois.shape[0], gt_boxes.shape[0]))
     for i in range(overlaps.shape[1]):
         gt = gt_boxes[i]
-        overlaps[:, i] = utils.compute_iou(
+        overlaps[:, i] = data.compute_iou(
             gt, rpn_rois, gt_box_area[i], rpn_roi_area)
 
     # Assign ROIs to GT boxes
@@ -1406,7 +1406,7 @@ def build_detection_targets(rpn_rois, gt_class_ids, gt_boxes, gt_masks, config):
     bboxes = np.zeros((config.TRAIN_ROIS_PER_IMAGE,
                        config.NUM_CLASSES, 4), dtype=np.float32)
     pos_ids = np.where(roi_gt_class_ids > 0)[0]
-    bboxes[pos_ids, roi_gt_class_ids[pos_ids]] = utils.box_refinement(
+    bboxes[pos_ids, roi_gt_class_ids[pos_ids]] = data.box_refinement(
         rois[pos_ids], roi_gt_boxes[pos_ids, :4])
     # Normalize bbox refinements
     bboxes /= config.BBOX_STD_DEV
@@ -1436,7 +1436,7 @@ def build_detection_targets(rpn_rois, gt_class_ids, gt_boxes, gt_masks, config):
         # Pick part of the mask and resize it
         y1, x1, y2, x2 = rois[i].astype(np.int32)
         m = class_mask[y1:y2, x1:x2]
-        mask = utils.resize(m, config.MASK_SHAPE)
+        mask = data.resize(m, config.MASK_SHAPE)
         masks[i, :, :, class_id] = mask
 
     return rois, roi_gt_class_ids, bboxes, masks
@@ -1471,7 +1471,7 @@ def build_rpn_targets(image_shape, anchors, gt_class_ids, gt_boxes, config):
         gt_class_ids = gt_class_ids[non_crowd_ix]
         gt_boxes = gt_boxes[non_crowd_ix]
         # Compute overlaps with crowd boxes [anchors, crowds]
-        crowd_overlaps = utils.compute_overlaps(anchors, crowd_boxes)
+        crowd_overlaps = data.compute_overlaps(anchors, crowd_boxes)
         crowd_iou_max = np.amax(crowd_overlaps, axis=1)
         no_crowd_bool = (crowd_iou_max < 0.001)
     else:
@@ -1479,7 +1479,7 @@ def build_rpn_targets(image_shape, anchors, gt_class_ids, gt_boxes, config):
         no_crowd_bool = np.ones([anchors.shape[0]], dtype=bool)
 
     # Compute overlaps [num_anchors, num_gt_boxes]
-    overlaps = utils.compute_overlaps(anchors, gt_boxes)
+    overlaps = data.compute_overlaps(anchors, gt_boxes)
 
     # Match anchors to GT Boxes
     # If an anchor overlaps a GT box with IoU >= 0.7 then it's positive.
@@ -1679,7 +1679,7 @@ def data_generator(dataset, config, shuffle=True, augment=False, augmentation=No
     # Anchors
     # [anchor_count, (y1, x1, y2, x2)]
     backbone_shapes = compute_backbone_shapes(config, config.IMAGE_SHAPE)
-    anchors = utils.generate_pyramid_anchors(config.RPN_ANCHOR_SCALES,
+    anchors = data.generate_pyramid_anchors(config.RPN_ANCHOR_SCALES,
                                              config.RPN_ANCHOR_RATIOS,
                                              backbone_shapes,
                                              config.BACKBONE_STRIDES,
@@ -2393,7 +2393,7 @@ class MaskRCNN():
         for image in images:
             # Resize image
             # TODO: move resizing to mold_image()
-            molded_image, window, scale, padding, crop = utils.resize_image(
+            molded_image, window, scale, padding, crop = data.resize_image(
                 image,
                 min_dim=self.config.IMAGE_MIN_DIM,
                 min_scale=self.config.IMAGE_MIN_SCALE,
@@ -2472,7 +2472,7 @@ class MaskRCNN():
         full_masks = []
         for i in range(N):
             # Convert neural network mask to full size mask
-            full_mask = utils.unmold_mask(masks[i], boxes[i], original_image_shape)
+            full_mask = data.unmold_mask(masks[i], boxes[i], original_image_shape)
             full_masks.append(full_mask)
         full_masks = np.stack(full_masks, axis=-1)\
             if full_masks else np.empty(original_image_shape[:2] + (0,))
@@ -2603,7 +2603,7 @@ class MaskRCNN():
             self._anchor_cache = {}
         if not tuple(image_shape) in self._anchor_cache:
             # Generate Anchors
-            a = utils.generate_pyramid_anchors(
+            a = data.generate_pyramid_anchors(
                 self.config.RPN_ANCHOR_SCALES,
                 self.config.RPN_ANCHOR_RATIOS,
                 backbone_shapes,
