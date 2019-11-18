@@ -11,7 +11,7 @@ import skimage.transform
 import warnings
 import tensorflow as tf
 from distutils.version import LooseVersion
-import utils
+from mrcnn import utils
 
 from pycocotools.coco import COCO
 from pycocotools.cocoeval import COCOeval
