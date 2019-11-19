@@ -36,22 +36,22 @@ COCO_MODEL_URL = "https://github.com/matterport/Mask_RCNN/releases/download/v2.0
 #  Resnet Graph
 ############################################################
 
-class BatchNorm(layers.BatchNormalization):
-    """Extends the Keras BatchNormalization class to allow a central place
-    to make changes if needed.
+# class BatchNorm(layers.BatchNormalization):
+#     """Extends the Keras BatchNormalization class to allow a central place
+#     to make changes if needed.
 
-    Batch normalization has a negative effect on training if batches are small
-    so this layer is often frozen (via setting in Config class) and functions
-    as linear layer.
-    """
-    def call(self, inputs, training=None):
-        """
-        Note about training values:
-            None: Train BN layers. This is the normal mode
-            False: Freeze BN layers. Good when batch size is small
-            True: (don't use). Set layer in training mode even when making inferences
-        """
-        return super(self.__class__, self).call(inputs, training=training)
+#     Batch normalization has a negative effect on training if batches are small
+#     so this layer is often frozen (via setting in Config class) and functions
+#     as linear layer.
+#     """
+#     def call(self, inputs, training=None):
+#         """
+#         Note about training values:
+#             None: Train BN layers. This is the normal mode
+#             False: Freeze BN layers. Good when batch size is small
+#             True: (don't use). Set layer in training mode even when making inferences
+#         """
+#         return super(self.__class__, self).call(inputs, training=training)
 
 
 
@@ -76,17 +76,17 @@ def identity_block(input_tensor, kernel_size, filters, stage, block,
 
     x = layers.Conv2D(nb_filter1, (1, 1), name=conv_name_base + '2a',
                   use_bias=use_bias)(input_tensor)
-    x = BatchNorm(name=bn_name_base + '2a')(x, training=train_bn)
+    x = layers.BatchNormalization(name=bn_name_base + '2a')(x, training=train_bn)
     x = layers.Activation('relu')(x)
 
     x = layers.Conv2D(nb_filter2, (kernel_size, kernel_size), padding='same',
                   name=conv_name_base + '2b', use_bias=use_bias)(x)
-    x = BatchNorm(name=bn_name_base + '2b')(x, training=train_bn)
+    x = layers.BatchNormalization(name=bn_name_base + '2b')(x, training=train_bn)
     x = layers.Activation('relu')(x)
 
     x = layers.Conv2D(nb_filter3, (1, 1), name=conv_name_base + '2c',
                   use_bias=use_bias)(x)
-    x = BatchNorm(name=bn_name_base + '2c')(x, training=train_bn)
+    x = layers.BatchNormalization(name=bn_name_base + '2c')(x, training=train_bn)
 
     x = layers.Add()([x, input_tensor])
     x = layers.Activation('relu', name='res' + str(stage) + block + '_out')(x)
@@ -113,21 +113,21 @@ def conv_block(input_tensor, kernel_size, filters, stage, block,
 
     x = layers.Conv2D(nb_filter1, (1, 1), strides=strides,
                   name=conv_name_base + '2a', use_bias=use_bias)(input_tensor)
-    x = BatchNorm(name=bn_name_base + '2a')(x, training=train_bn)
+    x = layers.BatchNormalization(name=bn_name_base + '2a')(x, training=train_bn)
     x = layers.Activation('relu')(x)
 
     x = layers.Conv2D(nb_filter2, (kernel_size, kernel_size), padding='same',
                   name=conv_name_base + '2b', use_bias=use_bias)(x)
-    x = BatchNorm(name=bn_name_base + '2b')(x, training=train_bn)
+    x = layers.BatchNormalization(name=bn_name_base + '2b')(x, training=train_bn)
     x = layers.Activation('relu')(x)
 
     x = layers.Conv2D(nb_filter3, (1, 1), name=conv_name_base +
                   '2c', use_bias=use_bias)(x)
-    x = BatchNorm(name=bn_name_base + '2c')(x, training=train_bn)
+    x = layers.BatchNormalization(name=bn_name_base + '2c')(x, training=train_bn)
 
     shortcut = layers.Conv2D(nb_filter3, (1, 1), strides=strides,
                          name=conv_name_base + '1', use_bias=use_bias)(input_tensor)
-    shortcut = BatchNorm(name=bn_name_base + '1')(shortcut, training=train_bn)
+    shortcut = layers.BatchNormalization(name=bn_name_base + '1')(shortcut, training=train_bn)
 
     x = layers.Add()([x, shortcut])
     x = layers.Activation('relu', name='res' + str(stage) + block + '_out')(x)
@@ -144,7 +144,7 @@ def resnet_graph(input_image, architecture, stage5=False, train_bn=True):
     # Stage 1
     x = layers.ZeroPadding2D((3, 3))(input_image)
     x = layers.Conv2D(64, (7, 7), strides=(2, 2), name='conv1', use_bias=True)(x)
-    x = BatchNorm(name='bn_conv1')(x, training=train_bn)
+    x = layers.BatchNormalization(name='bn_conv1')(x, training=train_bn)
     x = layers.Activation('relu')(x)
     C1 = x = layers.MaxPooling2D((3, 3), strides=(2, 2), padding="same")(x)
     # Stage 2
