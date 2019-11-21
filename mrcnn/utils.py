@@ -560,20 +560,3 @@ def compute_backbone_shapes(config, image_shape):
         [[int(math.ceil(image_shape[0] / stride)),
             int(math.ceil(image_shape[1] / stride))]
             for stride in config.BACKBONE_STRIDES])
-
-# Cache anchors and reuse if image shape is the same
-anchor_cache = {}
-def get_anchors(image_shape):
-    """Returns anchor pyramid for the given image size."""
-    backbone_shapes = utils.compute_backbone_shapes(config, image_shape)
-    if not tuple(image_shape) in anchor_cache:
-        # Generate Anchors
-        a = data.generate_pyramid_anchors(
-            config.RPN_ANCHOR_SCALES,
-            config.RPN_ANCHOR_RATIOS,
-            backbone_shapes,
-            config.BACKBONE_STRIDES,
-            config.RPN_ANCHOR_STRIDE)
-        # Normalize coordinates
-        anchor_cache[tuple(image_shape)] = utils.norm_boxes(a, image_shape[:2])
-    return anchor_cache[tuple(image_shape)]
