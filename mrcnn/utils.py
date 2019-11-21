@@ -291,6 +291,222 @@ def load_weights(model, filepath, args, config, by_name=False, exclude=None):
     # Update the log directory
     set_log_dir(args, config, filepath)
 
+def find_last(args, key):
+    """Finds the last checkpoint file of the last trained model in the
+    model directory.
+    Returns:
+        The path of the last checkpoint file
+    """
+    # Get directory names. Each directory corresponds to a model
+    dir_names = next(os.walk(args.model_dir))[1]
+    dir_names = filter(lambda f: f.startswith(key), dir_names)
+    dir_names = sorted(dir_names)
+    if not dir_names:
+        import errno
+        raise FileNotFoundError(
+            errno.ENOENT,
+            "Could not find model directory under {}".format(args.model_dir))
+    # Pick last directory
+    dir_name = os.path.join(args.model_dir, dir_names[-1])
+    # Find the last checkpoint
+    checkpoints = next(os.walk(dir_name))[2]
+    checkpoints = filter(lambda f: f.startswith("mask_rcnn"), checkpoints)
+    checkpoints = sorted(checkpoints)
+    if not checkpoints:
+        import errno
+        raise FileNotFoundError(
+            errno.ENOENT, "Could not find weight files in {}".format(dir_name))
+    checkpoint = os.path.join(dir_name, checkpoints[-1])
+    return checkpoint
+
+
+############################################################
+#  Model Training
+############################################################
+
+import re
+def set_trainable(layer_regex, keras_model=None, indent=0, verbose=1):
+    """Sets model layers as trainable if their names match
+    the given regular expression.
+    """
+    # Print message on the first call (but not on recursive calls)
+    if verbose > 0 and keras_model is None:
+        utils.log("Selecting layers to train")
+
+    keras_model = keras_model or model
+
+    # In multi-GPU training, we wrap the model. Get layers
+    # of the inner model because they have the weights.
+    layers = keras_model.inner_model.layers if hasattr(keras_model, "inner_model")\
+        else keras_model.layers
+
+    for layer in layers:
+        # Is the layer a model?
+        if layer.__class__.__name__ == 'Model':
+            print("In model: ", layer.name)
+            set_trainable(layer_regex, keras_model=layer, indent=indent + 4)
+            continue
+
+        if not layer.weights:
+            continue
+        # Is it trainable?
+        trainable = bool(re.fullmatch(layer_regex, layer.name))
+        # Update layer. If layer is a container, update inner layer.
+        if layer.__class__.__name__ == 'TimeDistributed':
+            layer.layer.trainable = trainable
+        else:
+            layer.trainable = trainable
+        # Print trainable layer names
+        if trainable and verbose > 0:
+            utils.log("{}{:20}   ({})".format(" " * indent, layer.name, layer.__class__.__name__))
+
+def compile(model, learning_rate, momentum):
+    """Gets the model ready for training. Adds losses, regularization, and
+    metrics. Then calls the Keras compile() function.
+    """
+    # Optimizer object
+    optimizer = keras.optimizers.SGD(
+        lr=learning_rate, momentum=momentum,
+        clipnorm=config.GRADIENT_CLIP_NORM)
+    # Add Losses
+    # First, clear previously set losses to avoid duplication
+    model._losses = []
+    model._per_input_losses = {}
+    loss_names = [
+        "rpn_class_loss",  "rpn_bbox_loss",
+        "mrcnn_class_loss", "mrcnn_bbox_loss", "mrcnn_mask_loss"]
+    for name in loss_names:
+        layer = model.get_layer(name)
+        if layer.output in model.losses:
+            continue
+        loss = (
+            tf.reduce_mean(layer.output, keepdims=True)
+            * config.LOSS_WEIGHTS.get(name, 1.))
+        model.add_loss(loss)
+
+    # Add L2 Regularization
+    # Skip gamma and beta weights of batch normalization layers.
+    reg_losses = [
+        keras.regularizers.l2(config.WEIGHT_DECAY)(w) / tf.cast(tf.size(w), tf.float32)
+        for w in model.trainable_weights
+        if 'gamma' not in w.name and 'beta' not in w.name]
+    model.add_loss(tf.add_n(reg_losses))
+
+    # Compile
+    model.compile(optimizer=optimizer, loss=[None] * len(model.outputs))
+
+    # Add metrics for losses
+    for name in loss_names:
+        if name in model.metrics_names:
+            continue
+        layer = model.get_layer(name)
+        model.metrics_names.append(name)
+        loss = (
+            tf.reduce_mean(layer.output, keepdims=True)
+            * config.LOSS_WEIGHTS.get(name, 1.))
+        model.metrics_tensors.append(loss)
+
+import multiprocessing
+def train(model, train_dataset, val_dataset, learning_rate, epochs, layers,
+          augmentation=None, custom_callbacks=None, no_augmentation_sources=None):
+    """Train the model.
+    train_dataset, val_dataset: Training and validation Dataset objects.
+    learning_rate: The learning rate to train with
+    epochs: Number of training epochs. Note that previous training epochs
+            are considered to be done alreay, so this actually determines
+            the epochs to train in total rather than in this particaular
+            call.
+    layers: Allows selecting wich layers to train. It can be:
+        - A regular expression to match layer names to train
+        - One of these predefined values:
+            heads: The RPN, classifier and mask heads of the network
+            all: All the layers
+            3+: Train Resnet stage 3 and up
+            4+: Train Resnet stage 4 and up
+            5+: Train Resnet stage 5 and up
+    augmentation: Optional. An imgaug (https://github.com/aleju/imgaug)
+        augmentation. For example, passing imgaug.augmenters.Fliplr(0.5)
+        flips images right/left 50% of the time. You can pass complex
+        augmentations as well. This augmentation applies 50% of the
+        time, and when it does it flips images right/left half the time
+        and adds a Gaussian blur with a random sigma in range 0 to 5.
+
+            augmentation = imgaug.augmenters.Sometimes(0.5, [
+                imgaug.augmenters.Fliplr(0.5),
+                imgaug.augmenters.GaussianBlur(sigma=(0.0, 5.0))
+            ])
+    custom_callbacks: Optional. Add custom callbacks to be called
+        with the keras fit_generator method. Must be list of type keras.callbacks.
+    no_augmentation_sources: Optional. List of sources to exclude for
+        augmentation. A source is string that identifies a dataset and is
+        defined in the Dataset class.
+    """
+    # Pre-defined layer regular expressions
+    layer_regex = {
+        # all layers but the backbone
+        "heads": r"(mrcnn\_.*)|(rpn\_.*)|(fpn\_.*)",
+        # From a specific Resnet stage and up
+        "3+": r"(res3.*)|(bn3.*)|(res4.*)|(bn4.*)|(res5.*)|(bn5.*)|(mrcnn\_.*)|(rpn\_.*)|(fpn\_.*)",
+        "4+": r"(res4.*)|(bn4.*)|(res5.*)|(bn5.*)|(mrcnn\_.*)|(rpn\_.*)|(fpn\_.*)",
+        "5+": r"(res5.*)|(bn5.*)|(mrcnn\_.*)|(rpn\_.*)|(fpn\_.*)",
+        # All layers
+        "all": ".*",
+    }
+    if layers in layer_regex.keys():
+        layers = layer_regex[layers]
+
+    # Data generators
+    train_generator = data.data_generator(train_dataset, config, shuffle=True,
+                                        augmentation=augmentation,
+                                        batch_size=config.BATCH_SIZE,
+                                        no_augmentation_sources=no_augmentation_sources)
+    val_generator = data.data_generator(val_dataset, config, shuffle=True,
+                                    batch_size=config.BATCH_SIZE)
+
+    # Create log_dir if it does not exist
+    if not os.path.exists(args.log_dir):
+        os.makedirs(args.log_dir)
+
+    # Callbacks
+    callbacks = [
+        keras.callbacks.TensorBoard(log_dir=args.log_dir,
+                                    histogram_freq=0, write_graph=True, write_images=False),
+        keras.callbacks.ModelCheckpoint(args.checkpoint_path,
+                                        verbose=0, save_weights_only=True),
+    ]
+
+    # Add custom callbacks to the list
+    if custom_callbacks:
+        callbacks += custom_callbacks
+
+    # Train
+    utils.log("\nStarting at epoch {}. LR={}\n".format(args.epoch, learning_rate))
+    utils.log("Checkpoint Path: {}".format(args.checkpoint_path))
+    set_trainable(layers)
+    compile(model, learning_rate, config.LEARNING_MOMENTUM)
+
+    # Work-around for Windows: Keras fails on Windows when using
+    # multiprocessing workers. See discussion here:
+    # https://github.com/matterport/Mask_RCNN/issues/13#issuecomment-353124009
+    if os.name is 'nt':
+        workers = 0
+    else:
+        workers = multiprocessing.cpu_count()
+
+    model.fit_generator(
+        train_generator,
+        initial_epoch=args.epoch,
+        epochs=epochs,
+        steps_per_epoch=config.STEPS_PER_EPOCH,
+        callbacks=callbacks,
+        validation_data=val_generator,
+        validation_steps=config.VALIDATION_STEPS,
+        max_queue_size=50,
+        workers=workers,
+        use_multiprocessing=True,
+    )
+    args.epoch = max(args.epoch, epochs)
+
 ############################################################
 #  Accurancy
 ############################################################

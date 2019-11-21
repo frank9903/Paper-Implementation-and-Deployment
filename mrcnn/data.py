@@ -506,34 +506,6 @@ class CocoDataset(Dataset):
         m = maskUtils.decode(rle)
         return m
 
-def find_last(args, key):
-    """Finds the last checkpoint file of the last trained model in the
-    model directory.
-    Returns:
-        The path of the last checkpoint file
-    """
-    # Get directory names. Each directory corresponds to a model
-    dir_names = next(os.walk(args.model_dir))[1]
-    dir_names = filter(lambda f: f.startswith(key), dir_names)
-    dir_names = sorted(dir_names)
-    if not dir_names:
-        import errno
-        raise FileNotFoundError(
-            errno.ENOENT,
-            "Could not find model directory under {}".format(args.model_dir))
-    # Pick last directory
-    dir_name = os.path.join(args.model_dir, dir_names[-1])
-    # Find the last checkpoint
-    checkpoints = next(os.walk(dir_name))[2]
-    checkpoints = filter(lambda f: f.startswith("mask_rcnn"), checkpoints)
-    checkpoints = sorted(checkpoints)
-    if not checkpoints:
-        import errno
-        raise FileNotFoundError(
-            errno.ENOENT, "Could not find weight files in {}".format(dir_name))
-    checkpoint = os.path.join(dir_name, checkpoints[-1])
-    return checkpoint
-
 ############################################################
 #  Bounding Boxes
 ############################################################
