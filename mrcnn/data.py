@@ -506,7 +506,7 @@ class CocoDataset(Dataset):
         m = maskUtils.decode(rle)
         return m
 
-def find_last(args):
+def find_last(args, key):
     """Finds the last checkpoint file of the last trained model in the
     model directory.
     Returns:
@@ -514,7 +514,6 @@ def find_last(args):
     """
     # Get directory names. Each directory corresponds to a model
     dir_names = next(os.walk(args.model_dir))[1]
-    key = config.NAME.lower()
     dir_names = filter(lambda f: f.startswith(key), dir_names)
     dir_names = sorted(dir_names)
     if not dir_names:
