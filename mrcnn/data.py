@@ -1699,7 +1699,7 @@ def train(model, config, args, train_dataset, val_dataset, learning_rate, epochs
     # Train
     utils.log("\nStarting at epoch {}. LR={}\n".format(args.epoch, learning_rate))
     utils.log("Checkpoint Path: {}".format(args.checkpoint_path))
-    set_trainable(layers)
+    set_trainable(layers, keras_model=model)
     compile(model, config, learning_rate, config.LEARNING_MOMENTUM)
 
     # Work-around for Windows: Keras fails on Windows when using
