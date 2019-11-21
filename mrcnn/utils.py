@@ -53,8 +53,6 @@ class BatchNorm(layers.BatchNormalization):
         """
         return super(self.__class__, self).call(inputs, training=training)
 
-
-
 # Code adopted from:
 # https://github.com/fchollet/deep-learning-models/blob/master/resnet50.py
 
@@ -170,22 +168,6 @@ def resnet_graph(input_image, architecture, stage5=False, train_bn=True):
     else:
         C5 = None
     return [C1, C2, C3, C4, C5]
-
-def compute_backbone_shapes(config, image_shape):
-    """Computes the width and height of each stage of the backbone network.
-
-    Returns:
-        [N, (height, width)]. Where N is the number of stages
-    """
-    if callable(config.BACKBONE):
-        return config.COMPUTE_BACKBONE_SHAPE(image_shape)
-
-    # Currently supports ResNet only
-    assert config.BACKBONE in ["resnet50", "resnet101"]
-    return np.array(
-        [[int(math.ceil(image_shape[0] / stride)),
-            int(math.ceil(image_shape[1] / stride))]
-            for stride in config.BACKBONE_STRIDES])
 
 ############################################################
 #  Logging
@@ -562,3 +544,36 @@ def denorm_boxes(boxes, shape):
     scale = np.array([h - 1, w - 1, h - 1, w - 1])
     shift = np.array([0, 0, 1, 1])
     return np.around(np.multiply(boxes, scale) + shift).astype(np.int32)
+
+def compute_backbone_shapes(config, image_shape):
+    """Computes the width and height of each stage of the backbone network.
+
+    Returns:
+        [N, (height, width)]. Where N is the number of stages
+    """
+    if callable(config.BACKBONE):
+        return config.COMPUTE_BACKBONE_SHAPE(image_shape)
+
+    # Currently supports ResNet only
+    assert config.BACKBONE in ["resnet50", "resnet101"]
+    return np.array(
+        [[int(math.ceil(image_shape[0] / stride)),
+            int(math.ceil(image_shape[1] / stride))]
+            for stride in config.BACKBONE_STRIDES])
+
+# Cache anchors and reuse if image shape is the same
+anchor_cache = {}
+def get_anchors(image_shape):
+    """Returns anchor pyramid for the given image size."""
+    backbone_shapes = utils.compute_backbone_shapes(config, image_shape)
+    if not tuple(image_shape) in anchor_cache:
+        # Generate Anchors
+        a = data.generate_pyramid_anchors(
+            config.RPN_ANCHOR_SCALES,
+            config.RPN_ANCHOR_RATIOS,
+            backbone_shapes,
+            config.BACKBONE_STRIDES,
+            config.RPN_ANCHOR_STRIDE)
+        # Normalize coordinates
+        anchor_cache[tuple(image_shape)] = utils.norm_boxes(a, image_shape[:2])
+    return anchor_cache[tuple(image_shape)]
