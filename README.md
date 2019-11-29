@@ -5,6 +5,16 @@ This repo is not meant to exactly reproduce the paper results but instead, what 
 1. Use local server and HTTP request
 2. Convert Pytorch model to CoreML model
 3. Convert Keras/TensorFlow model to CoreML model 
+
+***Colab tips: In order to keep Colab from disconnecting, add the following to your browser console.***
+```
+function ClickConnect(){
+console.log("Working"); 
+document.querySelector("colab-toolbar-button#connect").click() 
+}
+setInterval(ClickConnect,60000)
+```
+More details can be found [here](https://medium.com/@shivamrawat_756/how-to-prevent-google-colab-from-disconnecting-717b88a128c0).
 ## Table of Contents
 ### Mask R-CNN
 * Paper References: 
