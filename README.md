@@ -5,7 +5,7 @@ This repo is not meant to exactly reproduce the paper results but instead, what 
 1. Use local server and HTTP request
 2. Convert Pytorch model to CoreML model
 3. Convert Keras/TensorFlow model to CoreML model 
-## Table of Papers
+## Table of Contents
 ### Mask R-CNN
 * Paper References: 
   * Original Paper: [Mask R-CNN](https://arxiv.org/pdf/1703.06870v3.pdf)
