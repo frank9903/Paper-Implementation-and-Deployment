@@ -3,7 +3,7 @@ Build, train and deploy papers
 ## Introduction
 This repo is not meant to exactly reproduce the paper results but instead, what I want to achieve is to understand and visualize paper models without tedious environment setups. To do so, I'm going to build, train and validate the models all in __Google Colab__. On top of that, this repo will also focus on various ways of deploying the models (for iOS), including but not limited to:
 1. Use local server and HTTP request
-2. Convert Pytorch model to CoreML model
+2. Convert FastAI/Pytorch model to CoreML model
 3. Convert Keras/TensorFlow model to CoreML model 
 
 ***Colab tips: In order to keep Colab from disconnecting, add the following to your browser console.***
