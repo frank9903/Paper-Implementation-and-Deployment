@@ -18,7 +18,7 @@ class DefaultConfig(Config):
 
     IMAGES_PER_GPU = 1
 
-    BACKBONE = args.backbone
+    BACKBONE = "resnet50"
 
     # Number of classes (including background)
     NUM_CLASSES = 5 + 1
