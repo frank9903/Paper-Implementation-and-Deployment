@@ -1429,7 +1429,7 @@ def unmold_detections(detections, mrcnn_mask, original_image_shape,
 
     return boxes, class_ids, scores, full_masks
 
-def detect(inference_model, images, config, verbose=0):
+def detect(inference_model, images, config, verbose=0, threshold=0.8):
     """Runs the detection pipeline.
 
     images: List of images, potentially of different sizes.
@@ -1470,11 +1470,19 @@ def detect(inference_model, images, config, verbose=0):
     # Run object detection
     detections, _, _, mrcnn_mask, _, _, _ =\
         inference_model.predict([molded_images, image_metas, anchors], verbose=0)
+
+    # filter out low score
+    # note: detection is of size [n, N, (y1, x1, y2, x2, class_id, score)]
+    # where n is # of images and N is # of detections
+    score_filter = detections[:,:,5] > threshold
+    filtered_detection = np.array([detections[i][score_filter[i]] for i in range(score_filter.shape[0])])
+    filtered_mask = np.array([mrcnn_mask[i][score_filter[i]] for i in range(score_filter.shape[0])])
+
     # Process detections
     results = []
     for i, image in enumerate(images):
         final_rois, final_class_ids, final_scores, final_masks =\
-            unmold_detections(detections[i], mrcnn_mask[i],
+            unmold_detections(filtered_detection[i], filtered_mask[i],
                                     image.shape, molded_images[i].shape,
                                     windows[i])
         results.append({

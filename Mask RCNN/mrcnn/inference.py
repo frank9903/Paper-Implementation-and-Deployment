@@ -8,8 +8,23 @@ from keras import backend, layers, engine, models
 from mrcnn.config import Config
 from mrcnn import utils, data_utils as data, model_utils
 
+class DefaultConfig(Config):
+    """Configuration for training on MS COCO.
+    Derives from the base Config class and overrides values specific
+    to the COCO dataset.
+    """
+    # Give the configuration a recognizable name
+    NAME = "default"
+
+    IMAGES_PER_GPU = 1
+
+    BACKBONE = args.backbone
+
+    # Number of classes (including background)
+    NUM_CLASSES = 5 + 1
+
 # This is very similar to training model and I highlight all the differences.
-def build_inference_model(config):
+def build_inference_model(config=DefaultConfig()):
     input_image = layers.Input(shape=[None, None, config.IMAGE_SHAPE[2]], name="input_image")
     input_image_meta = layers.Input(shape=[config.IMAGE_META_SIZE], name="input_image_meta")
     # Diff1: we don't need any GT as input
