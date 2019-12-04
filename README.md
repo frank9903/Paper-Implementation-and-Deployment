@@ -20,6 +20,17 @@ More details can be found [here](https://medium.com/@shivamrawat_756/how-to-prev
 * Paper References: 
   * Original Paper: [Mask R-CNN](https://arxiv.org/pdf/1703.06870v3.pdf)
   * Related Paper: [R-CNN](https://arxiv.org/pdf/1311.2524.pdf), [Fast R-CNN](https://arxiv.org/pdf/1504.08083v2.pdf), [Faster R-CNN](https://arxiv.org/pdf/1506.01497v3.pdf)
-* Implementation Reference: https://github.com/matterport/Mask_RCNN.git
+* Implementation Reference: 
+  * https://github.com/matterport/Mask_RCNN.git
+  * https://github.com/sunshineatnoon/IOS_UPLOAD_TO_DJANGO_DEMO.git
 * Getting Started: Import [My Mask RCNN.ipynb](https://github.com/shuheng-cao/Paper-Implementation-and-Deployment/blob/master/Mask%20RCNN/requirements.txt) to __Google Colab__ and run all cells in the notebook
-* iOS Deploymeny Presentation: ___TODO___
+* Deployment Method: __Local Server__
+  * Local Server Setup:
+  ```
+  cd Local\ Server/
+  python manage.py migrate
+  cd myproject/
+  python manage.py runserver 0.0.0.0:8000
+  ```
+  Don't forget to change the IP Address defined in the beginning of [FirstViewController.swift](https://github.com/shuheng-cao/Paper-Implementation-and-Deployment/blob/master/Deployment/Deployment/FirstViewController.swift)
+* Presentation: ___TODO___
