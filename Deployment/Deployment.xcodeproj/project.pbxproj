@@ -21,6 +21,7 @@
 		FACAB14A239B65D800AB7659 /* upload.png in Resources */ = {isa = PBXBuildFile; fileRef = FACAB149239B65D800AB7659 /* upload.png */; };
 		FACAB14C239B687700AB7659 /* download.png in Resources */ = {isa = PBXBuildFile; fileRef = FACAB14B239B687700AB7659 /* download.png */; };
 		FACAB14E239C274500AB7659 /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = FACAB14D239C274500AB7659 /* camera.png */; };
+		FACAB150239C4E6200AB7659 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACAB14F239C4E6200AB7659 /* ImagePicker.swift */; };
 		FADAE367239B614900595DAF /* placehold.png in Resources */ = {isa = PBXBuildFile; fileRef = FADAE366239B614900595DAF /* placehold.png */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +44,7 @@
 		FACAB149239B65D800AB7659 /* upload.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = upload.png; sourceTree = "<group>"; };
 		FACAB14B239B687700AB7659 /* download.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = download.png; sourceTree = "<group>"; };
 		FACAB14D239C274500AB7659 /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera.png; sourceTree = "<group>"; };
+		FACAB14F239C4E6200AB7659 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		FADAE366239B614900595DAF /* placehold.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placehold.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -106,6 +108,7 @@
 				FA623E8A23981E1600E5941A /* AppDelegate.swift */,
 				FA623E8C23981E1600E5941A /* SceneDelegate.swift */,
 				FA623E8E23981E1600E5941A /* FirstViewController.swift */,
+				FACAB14F239C4E6200AB7659 /* ImagePicker.swift */,
 				FA623E9023981E1600E5941A /* SecondViewController.swift */,
 				FA623E9223981E1600E5941A /* Main.storyboard */,
 				FA623E9523981E1A00E5941A /* Assets.xcassets */,
@@ -239,6 +242,7 @@
 			files = (
 				FA623E9123981E1600E5941A /* SecondViewController.swift in Sources */,
 				FA623E8F23981E1600E5941A /* FirstViewController.swift in Sources */,
+				FACAB150239C4E6200AB7659 /* ImagePicker.swift in Sources */,
 				FA623E8B23981E1600E5941A /* AppDelegate.swift in Sources */,
 				FA623E8D23981E1600E5941A /* SceneDelegate.swift in Sources */,
 			);

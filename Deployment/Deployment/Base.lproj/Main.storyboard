@@ -15,11 +15,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="placehold.png" translatesAutoresizingMaskIntoConstraints="NO" id="czC-rI-mws">
-                                <rect key="frame" x="127" y="49" width="1113" height="720"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placehold.png" translatesAutoresizingMaskIntoConstraints="NO" id="czC-rI-mws">
+                                <rect key="frame" x="20" y="20" width="1326" height="749"/>
                             </imageView>
                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RRY-VP-au6">
-                                <rect key="frame" x="343" y="790" width="332" height="216"/>
+                                <rect key="frame" x="343.5" y="790" width="332" height="216"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="332" id="knV-BP-hf7"/>
                                 </constraints>
@@ -60,8 +60,11 @@
                                     <constraint firstAttribute="width" constant="80" id="SnH-TS-W1O"/>
                                 </constraints>
                                 <state key="normal" image="camera.png"/>
+                                <connections>
+                                    <action selector="pickImage:" destination="9pv-A4-QxB" eventType="touchUpInside" id="9uB-XO-5pk"/>
+                                </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yl2-8y-9Rt">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yl2-8y-9Rt">
                                 <rect key="frame" x="1160" y="824" width="80" height="80"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="80" id="oR2-Zu-RXe"/>
@@ -75,17 +78,17 @@
                             <constraint firstItem="RRY-VP-au6" firstAttribute="top" secondItem="czC-rI-mws" secondAttribute="bottom" constant="21" id="A98-Zk-C1w"/>
                             <constraint firstItem="rt6-a5-xYe" firstAttribute="centerY" secondItem="Yl2-8y-9Rt" secondAttribute="centerY" id="AEl-6I-CqI"/>
                             <constraint firstItem="PQr-Ze-W5v" firstAttribute="bottom" secondItem="Ltp-le-k8Z" secondAttribute="bottom" constant="55" id="Cvx-V8-cZA"/>
-                            <constraint firstItem="czC-rI-mws" firstAttribute="trailing" secondItem="Yl2-8y-9Rt" secondAttribute="trailing" id="GEg-rC-Xty"/>
+                            <constraint firstItem="czC-rI-mws" firstAttribute="trailing" secondItem="Yl2-8y-9Rt" secondAttribute="trailing" constant="106" id="GEg-rC-Xty"/>
                             <constraint firstItem="czC-rI-mws" firstAttribute="centerX" secondItem="tsR-hK-woN" secondAttribute="centerX" id="Gq8-WI-cTq"/>
-                            <constraint firstItem="czC-rI-mws" firstAttribute="top" secondItem="PQr-Ze-W5v" secondAttribute="top" constant="49" id="J28-A0-8bC"/>
-                            <constraint firstItem="czC-rI-mws" firstAttribute="leading" secondItem="Ltp-le-k8Z" secondAttribute="leading" id="Mya-g4-OJ2"/>
+                            <constraint firstItem="czC-rI-mws" firstAttribute="top" secondItem="PQr-Ze-W5v" secondAttribute="top" constant="20" id="J28-A0-8bC"/>
+                            <constraint firstItem="czC-rI-mws" firstAttribute="leading" secondItem="Ltp-le-k8Z" secondAttribute="leading" constant="-107" id="Mya-g4-OJ2"/>
                             <constraint firstItem="RRY-VP-au6" firstAttribute="centerX" secondItem="Jdz-TH-a5h" secondAttribute="centerX" id="OrF-NL-4A7"/>
                             <constraint firstItem="Ltp-le-k8Z" firstAttribute="bottom" secondItem="Yl2-8y-9Rt" secondAttribute="bottom" id="bwN-JJ-kc1"/>
                             <constraint firstItem="Ltp-le-k8Z" firstAttribute="top" secondItem="Yl2-8y-9Rt" secondAttribute="top" id="cBb-P6-28m"/>
                             <constraint firstItem="Jdz-TH-a5h" firstAttribute="leading" secondItem="tsR-hK-woN" secondAttribute="leading" constant="341" id="dgK-Pk-lKx"/>
                             <constraint firstItem="PQr-Ze-W5v" firstAttribute="bottom" secondItem="Jdz-TH-a5h" secondAttribute="bottom" constant="127" id="gHM-Rs-Nmm"/>
                             <constraint firstAttribute="trailing" secondItem="rt6-a5-xYe" secondAttribute="trailing" constant="326" id="ls3-7p-la7"/>
-                            <constraint firstItem="czC-rI-mws" firstAttribute="leading" secondItem="PQr-Ze-W5v" secondAttribute="leading" constant="127" id="oAS-P5-eRG"/>
+                            <constraint firstItem="czC-rI-mws" firstAttribute="leading" secondItem="PQr-Ze-W5v" secondAttribute="leading" constant="20" id="oAS-P5-eRG"/>
                             <constraint firstItem="Jdz-TH-a5h" firstAttribute="top" secondItem="RRY-VP-au6" secondAttribute="top" id="oZa-3a-VlT"/>
                             <constraint firstItem="Ltp-le-k8Z" firstAttribute="top" secondItem="czC-rI-mws" secondAttribute="bottom" constant="55" id="zUE-uY-jB3"/>
                         </constraints>
@@ -111,8 +114,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="More To Come" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="zEq-FU-wV5">
-                                <rect key="frame" x="571" y="490.5" width="224" height="43"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="TO BE CONTINUED" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="zEq-FU-wV5">
+                                <rect key="frame" x="529" y="490.5" width="308" height="43"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="36"/>
                                 <nil key="highlightedColor"/>

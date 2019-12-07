@@ -9,12 +9,13 @@
 import UIKit
 import AFNetworking
 
-class FirstViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class FirstViewController: UIViewController {
     @IBOutlet weak var result: UIImageView!
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var button: UIButton!
     @IBOutlet weak var selector: UIPickerView!
     var selectorData:[String] = [String]()
+    var imagePicker: ImagePicker!
     
     // WARNING: change me to your own IP address (run `ipconfig getifaddr en0` in terminal)
     let address = "17.230.186.33"
@@ -27,26 +28,8 @@ class FirstViewController: UIViewController, UIPickerViewDelegate, UIPickerViewD
         self.button.layer.cornerRadius = 20
         self.button.layer.borderWidth = 3
         self.button.setTitleColor(UIColor.white, for: .normal)
-        // Do any additional setup after loading the view.
-    }
-    
-    // UIPickerViewDelegate
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return selectorData.count
-    }
-    
-    // UIPickerViewDataSource
-//    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-//        return selectorData[row]
-//    }
-
-    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
-        
-        return NSAttributedString(string: selectorData[row], attributes: [NSAttributedString.Key.foregroundColor:UIColor.white])
+        self.result.contentMode = .scaleAspectFit
+        self.imagePicker = ImagePicker(presentationController: self, delegate: self)
     }
     
     func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
@@ -88,6 +71,35 @@ class FirstViewController: UIViewController, UIPickerViewDelegate, UIPickerViewD
         })
     }
     
-    
+    // show image picker
+    @IBAction func pickImage(_ sender: Any) {
+        self.imagePicker.present(from: sender as! UIView)
+    }
 }
 
+
+// for method selector
+extension FirstViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+    // UIPickerViewDelegate
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return selectorData.count
+    }
+    
+    // UIPickerViewDataSource
+    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+        
+        return NSAttributedString(string: selectorData[row], attributes: [NSAttributedString.Key.foregroundColor:UIColor.white])
+    }
+}
+
+// image picker
+extension FirstViewController: ImagePickerDelegate {
+    
+    func didSelect(image: UIImage?) {
+        self.result.image = image
+    }
+}
