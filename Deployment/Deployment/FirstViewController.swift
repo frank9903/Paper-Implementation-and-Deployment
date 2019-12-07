@@ -85,6 +85,24 @@ class FirstViewController: UIViewController {
     @IBAction func pickImage(_ sender: Any) {
         self.imagePicker.present(from: sender as! UIView)
     }
+    
+    // Save the image to local library
+    @IBAction func saveImage(_ sender: Any) {
+        UIImageWriteToSavedPhotosAlbum(result.image!, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
+    }
+    
+    @objc func image(_ image: UIImage, didFinishSavingWithError error: NSError?, contextInfo: UnsafeRawPointer) {
+        if let error = error {
+            // we got back an error!
+            let ac = UIAlertController(title: "Save error", message: error.localizedDescription, preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
+        } else {
+            let ac = UIAlertController(title: "Image Successfully Saved", message: "", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
+        }
+    }
 }
 
 
@@ -110,6 +128,8 @@ extension FirstViewController: UIPickerViewDelegate, UIPickerViewDataSource {
 extension FirstViewController: ImagePickerDelegate {
     
     func didSelect(image: UIImage?) {
-        self.result.image = image
+        if image != nil {
+            self.result.image = image
+        }
     }
 }
