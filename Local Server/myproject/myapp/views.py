@@ -10,6 +10,7 @@ import sys
 # insert at 1, 0 is the script path (or '' in REPL)
 sys.path.insert(1, '/Users/shuheng/Documents/iCloud/2019F/Paper-Implementation-and-Deployment/Mask RCNN/')
 import run_inference
+
 @csrf_exempt
 
 def list(request):

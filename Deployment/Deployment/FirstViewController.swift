@@ -9,21 +9,51 @@
 import UIKit
 import AFNetworking
 
-class FirstViewController: UIViewController {
-
+class FirstViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     @IBOutlet weak var result: UIImageView!
+    @IBOutlet weak var label: UILabel!
+    @IBOutlet weak var button: UIButton!
+    @IBOutlet weak var selector: UIPickerView!
+    var selectorData:[String] = [String]()
+    
     // WARNING: change me to your own IP address (run `ipconfig getifaddr en0` in terminal)
     let address = "17.230.186.33"
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        selectorData = ["Apple Default", "Customized"]
+        self.selector.delegate = self
+        self.selector.dataSource = self
+        self.button.layer.cornerRadius = 20
+        self.button.layer.borderWidth = 3
+        self.button.setTitleColor(UIColor.white, for: .normal)
         // Do any additional setup after loading the view.
+    }
+    
+    // UIPickerViewDelegate
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return selectorData.count
+    }
+    
+    // UIPickerViewDataSource
+//    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+//        return selectorData[row]
+//    }
+
+    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+        
+        return NSAttributedString(string: selectorData[row], attributes: [NSAttributedString.Key.foregroundColor:UIColor.white])
     }
     
     func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
         URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
     }
 
+    // send request to local server and receive inference result
     @IBAction func update(_ sender: Any) {
         let manager = AFHTTPSessionManager(baseURL: URL(string: "http://server.url"))
         let image = UIImage(named: "1.jpg")
@@ -57,6 +87,7 @@ class FirstViewController: UIViewController {
                 NSLog("FAILURE: \(error)")
         })
     }
+    
     
 }
 
