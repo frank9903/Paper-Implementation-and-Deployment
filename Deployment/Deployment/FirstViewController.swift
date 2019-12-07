@@ -39,8 +39,18 @@ class FirstViewController: UIViewController {
     // send request to local server and receive inference result
     @IBAction func update(_ sender: Any) {
         let manager = AFHTTPSessionManager(baseURL: URL(string: "http://server.url"))
-        let image = UIImage(named: "1.jpg")
+        let image = result.image
         let imageData = image!.jpegData(compressionQuality:0.5)
+        
+        // check data
+        let defaultImageData = UIImage(named: "placehold.png")?.jpegData(compressionQuality: 0.5)
+        if (defaultImageData == imageData) {
+            let alert = UIAlertController(title: "No Image Uploaded", message: "", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            return
+        }
+        
         let parameters = ["name":"Shuheng"]
         
         manager.responseSerializer = AFHTTPResponseSerializer()
