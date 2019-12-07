@@ -23,7 +23,7 @@ More details can be found [here](https://medium.com/@shivamrawat_756/how-to-prev
 * Implementation Reference: 
   * https://github.com/matterport/Mask_RCNN.git
   * https://github.com/sunshineatnoon/IOS_UPLOAD_TO_DJANGO_DEMO.git
-* Getting Started: Import [My Mask RCNN.ipynb](https://github.com/shuheng-cao/Paper-Implementation-and-Deployment/blob/master/Mask%20RCNN/requirements.txt) to __Google Colab__ and run all cells in the notebook
+* Getting Started: Git clone this repo and open [My Mask RCNN.ipynb](https://github.com/shuheng-cao/Paper-Implementation-and-Deployment/blob/master/Mask%20RCNN/requirements.txt) using __Google Colab__ to run all cells in the notebook
 * Deployment Method: __Local Server__
   * Local Server Setup:
   ```
