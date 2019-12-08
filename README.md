@@ -27,10 +27,20 @@ More details can be found [here](https://medium.com/@shivamrawat_756/how-to-prev
 * Deployment Method: __Local Server__
   * Local Server Setup:
   ```
+  cd Mask\ RCNN/
+  pip install -r 'requirements.txt' 
+  python setup.py install
+  ```
+  * Local Server Setup:
+  ```
   cd Local\ Server/
   python manage.py migrate
   cd myproject/
   python manage.py runserver 0.0.0.0:8000
   ```
   Don't forget to change the IP Address defined in the beginning of [FirstViewController.swift](https://github.com/shuheng-cao/Paper-Implementation-and-Deployment/blob/master/Deployment/Deployment/FirstViewController.swift)
-* Presentation: ___TODO___
+* Presentation:
+
+  <img src="https://github.com/shuheng-cao/Paper-Implementation-and-Deployment/blob/master/Mask RCNN/demo/IMG_253A54215DE1-1.jpeg" width="480" height="360" />
+  <img src="https://github.com/shuheng-cao/Paper-Implementation-and-Deployment/blob/master/Mask RCNN/demo/ezgif.com-video-to-gif.gif" width="480" height="360" />
+   
