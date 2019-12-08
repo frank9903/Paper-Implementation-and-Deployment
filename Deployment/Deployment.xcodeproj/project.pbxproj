@@ -18,6 +18,13 @@
 		FA623E9423981E1600E5941A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA623E9223981E1600E5941A /* Main.storyboard */; };
 		FA623E9623981E1A00E5941A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA623E9523981E1A00E5941A /* Assets.xcassets */; };
 		FA623E9923981E1A00E5941A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA623E9723981E1A00E5941A /* LaunchScreen.storyboard */; };
+		FA9E709B239C792800A54021 /* TinyYOLO.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = FA9E709A239C792800A54021 /* TinyYOLO.mlmodel */; };
+		FA9E709D239C793A00A54021 /* YOLO.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9E709C239C793A00A54021 /* YOLO.swift */; };
+		FA9E709F239C794200A54021 /* UIImage+CVPixelBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9E709E239C794200A54021 /* UIImage+CVPixelBuffer.swift */; };
+		FA9E70A1239C794B00A54021 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9E70A0239C794A00A54021 /* Helpers.swift */; };
+		FA9E70A4239C796A00A54021 /* BoundingBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9E70A2239C796A00A54021 /* BoundingBox.swift */; };
+		FA9E70A5239C796A00A54021 /* CVPixelBuffer+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9E70A3239C796A00A54021 /* CVPixelBuffer+Helpers.swift */; };
+		FA9E70A7239C79BB00A54021 /* Default_YOLO.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9E70A6239C79BB00A54021 /* Default_YOLO.swift */; };
 		FACAB14A239B65D800AB7659 /* upload.png in Resources */ = {isa = PBXBuildFile; fileRef = FACAB149239B65D800AB7659 /* upload.png */; };
 		FACAB14C239B687700AB7659 /* download.png in Resources */ = {isa = PBXBuildFile; fileRef = FACAB14B239B687700AB7659 /* download.png */; };
 		FACAB14E239C274500AB7659 /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = FACAB14D239C274500AB7659 /* camera.png */; };
@@ -41,6 +48,13 @@
 		FA623E9523981E1A00E5941A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FA623E9823981E1A00E5941A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FA623E9A23981E1A00E5941A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FA9E709A239C792800A54021 /* TinyYOLO.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = TinyYOLO.mlmodel; sourceTree = "<group>"; };
+		FA9E709C239C793A00A54021 /* YOLO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YOLO.swift; sourceTree = "<group>"; };
+		FA9E709E239C794200A54021 /* UIImage+CVPixelBuffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+CVPixelBuffer.swift"; sourceTree = "<group>"; };
+		FA9E70A0239C794A00A54021 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		FA9E70A2239C796A00A54021 /* BoundingBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoundingBox.swift; sourceTree = "<group>"; };
+		FA9E70A3239C796A00A54021 /* CVPixelBuffer+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CVPixelBuffer+Helpers.swift"; sourceTree = "<group>"; };
+		FA9E70A6239C79BB00A54021 /* Default_YOLO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Default_YOLO.swift; sourceTree = "<group>"; };
 		FACAB149239B65D800AB7659 /* upload.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = upload.png; sourceTree = "<group>"; };
 		FACAB14B239B687700AB7659 /* download.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = download.png; sourceTree = "<group>"; };
 		FACAB14D239C274500AB7659 /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera.png; sourceTree = "<group>"; };
@@ -109,6 +123,20 @@
 			path = Deployment;
 			sourceTree = "<group>";
 		};
+		FA9E7099239C791300A54021 /* YOLO Model */ = {
+			isa = PBXGroup;
+			children = (
+				FA9E70A2239C796A00A54021 /* BoundingBox.swift */,
+				FA9E70A3239C796A00A54021 /* CVPixelBuffer+Helpers.swift */,
+				FA9E70A0239C794A00A54021 /* Helpers.swift */,
+				FA9E709E239C794200A54021 /* UIImage+CVPixelBuffer.swift */,
+				FA9E709C239C793A00A54021 /* YOLO.swift */,
+				FA9E709A239C792800A54021 /* TinyYOLO.mlmodel */,
+				FA9E70A6239C79BB00A54021 /* Default_YOLO.swift */,
+			);
+			path = "YOLO Model";
+			sourceTree = "<group>";
+		};
 		FACAB156239C773300AB7659 /* Data */ = {
 			isa = PBXGroup;
 			children = (
@@ -136,6 +164,7 @@
 		FACAB159239C780B00AB7659 /* 1st */ = {
 			isa = PBXGroup;
 			children = (
+				FA9E7099239C791300A54021 /* YOLO Model */,
 				FACAB14F239C4E6200AB7659 /* ImagePicker.swift */,
 				FA623E8E23981E1600E5941A /* FirstViewController.swift */,
 			);
@@ -275,8 +304,15 @@
 				FA623E9123981E1600E5941A /* SecondViewController.swift in Sources */,
 				FA623E8F23981E1600E5941A /* FirstViewController.swift in Sources */,
 				FACAB150239C4E6200AB7659 /* ImagePicker.swift in Sources */,
+				FA9E709B239C792800A54021 /* TinyYOLO.mlmodel in Sources */,
+				FA9E70A1239C794B00A54021 /* Helpers.swift in Sources */,
+				FA9E70A4239C796A00A54021 /* BoundingBox.swift in Sources */,
 				FA623E8B23981E1600E5941A /* AppDelegate.swift in Sources */,
+				FA9E70A5239C796A00A54021 /* CVPixelBuffer+Helpers.swift in Sources */,
+				FA9E70A7239C79BB00A54021 /* Default_YOLO.swift in Sources */,
+				FA9E709D239C793A00A54021 /* YOLO.swift in Sources */,
 				FA623E8D23981E1600E5941A /* SceneDelegate.swift in Sources */,
+				FA9E709F239C794200A54021 /* UIImage+CVPixelBuffer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -18,6 +18,8 @@ class FirstViewController: UIViewController {
     @IBOutlet weak var selector: UIPickerView!
     var selectorData:[String] = [String]()
     var imagePicker: ImagePicker!
+    var defaultModel = Default_YOLO()
+    var isNewImage = true
     
     // WARNING: change me to your own IP address (run `ipconfig getifaddr en0` in terminal)
     let address = "17.230.186.33"
@@ -40,16 +42,24 @@ class FirstViewController: UIViewController {
     
     
     @IBAction func update(_ sender: Any) {
-        if (selector.selectedRow(inComponent: 0) == 0) {
-            defaultPredict()
+        if isNewImage {
+            if (selector.selectedRow(inComponent: 0) == 0) {
+                defaultPredict()
+            } else {
+                customizedPredict()
+            }
         } else {
-            customizedPredict()
+            let ac = UIAlertController(title: "Image already been processed", message: "", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
         }
+        isNewImage = false
     }
     
     // show image picker
     @IBAction func pickImage(_ sender: Any) {
         self.imagePicker.present(from: sender as! UIView)
+        isNewImage = true
     }
     
     // Save the image to local library
@@ -104,7 +114,8 @@ extension FirstViewController: ImagePickerDelegate {
 extension FirstViewController {
     // default prediction
     func defaultPredict() {
-        return
+        let predictions = defaultModel.predict(image: result.image!)
+        result.image = defaultModel.show(image: result.image!, predictions: predictions)
     }
     
     // send request to local server and receive inference result
