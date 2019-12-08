@@ -185,6 +185,8 @@ extension FirstViewController {
         view.bringSubviewToFront(maskView)
         view.bringSubviewToFront(progressView)
         view.bringSubviewToFront(loadingTextView)
+        
+        progressView.progress = 0
         // timeInterval seconds
         totalTime = timeInterval / 0.01
         countDown = 0
@@ -215,7 +217,9 @@ extension FirstViewController {
             progressView.progress += 1.0 / totalTime
         } else {
             timer.invalidate()
-            self.dismissMaskView()
+            if (totalTime == 1 / 0.01) {
+                self.dismissMaskView()
+            }
         }
     }
     
@@ -266,6 +270,7 @@ extension FirstViewController {
             success:
             { (operation:URLSessionDataTask, responseObject:Any?) in
                 NSLog("SUCCESS: \(operation.response!)")
+                self.accelerate()
                 // TODO: this is really hacky way of fetching image, try to extract url from responseObject
                 let url:URL = URL(string: "http://\(self.address):8000/media/result.png")!
                 self.getData(from: url) { (data, response, error) in
@@ -276,7 +281,6 @@ extension FirstViewController {
                         self.result.image = UIImage(data: data)!
                     }
                 }
-                self.accelerate()
         },
             failure:
             { (operation:URLSessionDataTask?, error:Error) in
@@ -285,12 +289,12 @@ extension FirstViewController {
                 ac.addAction(UIAlertAction(title: "OK", style: .default))
                 self.present(ac, animated: true)
         })
-        print("Hello World from Shuhneng")
     }
     
     func accelerate() {
         let currentProgress = progressView.progress
         if (currentProgress < 1.0) {
+            timer.invalidate()
             // 1 seconds
             totalTime = 1 / 0.01
             countDown = 0
@@ -301,6 +305,8 @@ extension FirstViewController {
                                          repeats: true)
             
             timer.fire()
+        } else {
+            dismissMaskView()
         }
     }
 }
