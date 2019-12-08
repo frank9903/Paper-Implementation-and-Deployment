@@ -29,9 +29,9 @@
 		731853FF0DCB423601F40B71 /* Pods_Deployment.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Deployment.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E170CC116E818C3A34D2E92 /* Pods-Deployment.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Deployment.debug.xcconfig"; path = "Target Support Files/Pods-Deployment/Pods-Deployment.debug.xcconfig"; sourceTree = "<group>"; };
 		A57B3AD4D95E4515D6EDCCD3 /* Pods-Deployment.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Deployment.release.xcconfig"; path = "Target Support Files/Pods-Deployment/Pods-Deployment.release.xcconfig"; sourceTree = "<group>"; };
-		FA567DA023985113006D2826 /* 3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 3.jpg; path = "../../Mask RCNN/test_images/3.jpg"; sourceTree = "<group>"; };
-		FA567DA123985113006D2826 /* 2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 2.jpg; path = "../../Mask RCNN/test_images/2.jpg"; sourceTree = "<group>"; };
-		FA567DA223985113006D2826 /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 1.jpg; path = "../../Mask RCNN/test_images/1.jpg"; sourceTree = "<group>"; };
+		FA567DA023985113006D2826 /* 3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 3.jpg; sourceTree = "<group>"; };
+		FA567DA123985113006D2826 /* 2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 2.jpg; sourceTree = "<group>"; };
+		FA567DA223985113006D2826 /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
 		FA623E8723981E1600E5941A /* Deployment.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Deployment.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA623E8A23981E1600E5941A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FA623E8C23981E1600E5941A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -98,6 +98,21 @@
 		FA623E8923981E1600E5941A /* Deployment */ = {
 			isa = PBXGroup;
 			children = (
+				FACAB157239C776800AB7659 /* View Controllers */,
+				FACAB156239C773300AB7659 /* Data */,
+				FA623E8A23981E1600E5941A /* AppDelegate.swift */,
+				FA623E8C23981E1600E5941A /* SceneDelegate.swift */,
+				FA623E9223981E1600E5941A /* Main.storyboard */,
+				FA623E9723981E1A00E5941A /* LaunchScreen.storyboard */,
+				FA623E9A23981E1A00E5941A /* Info.plist */,
+			);
+			path = Deployment;
+			sourceTree = "<group>";
+		};
+		FACAB156239C773300AB7659 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				FA623E9523981E1A00E5941A /* Assets.xcassets */,
 				FA567DA223985113006D2826 /* 1.jpg */,
 				FA567DA123985113006D2826 /* 2.jpg */,
 				FA567DA023985113006D2826 /* 3.jpg */,
@@ -105,17 +120,34 @@
 				FACAB14B239B687700AB7659 /* download.png */,
 				FACAB14D239C274500AB7659 /* camera.png */,
 				FACAB149239B65D800AB7659 /* upload.png */,
-				FA623E8A23981E1600E5941A /* AppDelegate.swift */,
-				FA623E8C23981E1600E5941A /* SceneDelegate.swift */,
-				FA623E8E23981E1600E5941A /* FirstViewController.swift */,
-				FACAB14F239C4E6200AB7659 /* ImagePicker.swift */,
-				FA623E9023981E1600E5941A /* SecondViewController.swift */,
-				FA623E9223981E1600E5941A /* Main.storyboard */,
-				FA623E9523981E1A00E5941A /* Assets.xcassets */,
-				FA623E9723981E1A00E5941A /* LaunchScreen.storyboard */,
-				FA623E9A23981E1A00E5941A /* Info.plist */,
 			);
-			path = Deployment;
+			path = Data;
+			sourceTree = "<group>";
+		};
+		FACAB157239C776800AB7659 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				FACAB159239C780B00AB7659 /* 1st */,
+				FACAB15A239C781D00AB7659 /* 2nd */,
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		FACAB159239C780B00AB7659 /* 1st */ = {
+			isa = PBXGroup;
+			children = (
+				FACAB14F239C4E6200AB7659 /* ImagePicker.swift */,
+				FA623E8E23981E1600E5941A /* FirstViewController.swift */,
+			);
+			path = 1st;
+			sourceTree = "<group>";
+		};
+		FACAB15A239C781D00AB7659 /* 2nd */ = {
+			isa = PBXGroup;
+			children = (
+				FA623E9023981E1600E5941A /* SecondViewController.swift */,
+			);
+			path = 2nd;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

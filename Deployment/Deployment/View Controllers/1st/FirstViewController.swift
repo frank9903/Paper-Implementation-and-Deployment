@@ -8,6 +8,8 @@
 
 import UIKit
 import AFNetworking
+import CoreML
+import Vision
 
 class FirstViewController: UIViewController {
     @IBOutlet weak var result: UIImageView!
@@ -35,50 +37,14 @@ class FirstViewController: UIViewController {
     func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
         URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
     }
-
-    // send request to local server and receive inference result
+    
+    
     @IBAction func update(_ sender: Any) {
-        let manager = AFHTTPSessionManager(baseURL: URL(string: "http://server.url"))
-        let image = result.image
-        let imageData = image!.jpegData(compressionQuality:0.5)
-        
-        // check data
-        let defaultImageData = UIImage(named: "placehold.png")?.jpegData(compressionQuality: 0.5)
-        if (defaultImageData == imageData) {
-            let alert = UIAlertController(title: "No Image Uploaded", message: "", preferredStyle: UIAlertController.Style.alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-            return
+        if (selector.selectedRow(inComponent: 0) == 0) {
+            defaultPredict()
+        } else {
+            customizedPredict()
         }
-        
-        let parameters = ["name":"Shuheng"]
-        
-        manager.responseSerializer = AFHTTPResponseSerializer()
-//      TODO: find the proper time out interval
-        manager.requestSerializer.timeoutInterval = 300
-        manager.post("http://\(self.address):8000/myapp/list/",
-                     parameters: parameters,
-                     constructingBodyWith: { (formData: AFMultipartFormData) in
-                        formData.appendPart(withFileData: imageData!, name: "docfile", fileName: "photo.jpg", mimeType: "image/jpg")
-        },
-                     success:
-            { (operation:URLSessionDataTask, responseObject:Any?) in
-                NSLog("SUCCESS: \(operation.response!)")
-//              TODO: this is really hacky way of fetching image, try to extract url from responseObject
-                let url:URL = URL(string: "http://\(self.address):8000/media/result.png")!
-                self.getData(from: url) { (data, response, error) in
-                    guard let data = data, error == nil else { return }
-                    print(response?.suggestedFilename ?? url.lastPathComponent)
-                    print("Download Finished")
-                    DispatchQueue.main.async() {
-                        self.result.image = UIImage(data: data)!
-                    }
-                }
-        },
-                     failure:
-            { (operation:URLSessionDataTask?, error:Error) in
-                NSLog("FAILURE: \(error)")
-        })
     }
     
     // show image picker
@@ -131,5 +97,59 @@ extension FirstViewController: ImagePickerDelegate {
         if image != nil {
             self.result.image = image
         }
+    }
+}
+
+// predictions
+extension FirstViewController {
+    // default prediction
+    func defaultPredict() {
+        return
+    }
+    
+    // send request to local server and receive inference result
+    func customizedPredict() {
+        
+        let manager = AFHTTPSessionManager(baseURL: URL(string: "http://server.url"))
+        let image = result.image
+        let imageData = image!.jpegData(compressionQuality:0.5)
+        
+        // check data
+        let defaultImageData = UIImage(named: "placehold.png")?.jpegData(compressionQuality: 0.5)
+        if (defaultImageData == imageData) {
+            let alert = UIAlertController(title: "No Image Uploaded", message: "", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            return
+        }
+        
+        let parameters = ["name":"Shuheng"]
+        
+        manager.responseSerializer = AFHTTPResponseSerializer()
+        //      TODO: find the proper time out interval
+        manager.requestSerializer.timeoutInterval = 300
+        manager.post("http://\(self.address):8000/myapp/list/",
+            parameters: parameters,
+            constructingBodyWith: { (formData: AFMultipartFormData) in
+                formData.appendPart(withFileData: imageData!, name: "docfile", fileName: "photo.jpg", mimeType: "image/jpg")
+        },
+            success:
+            { (operation:URLSessionDataTask, responseObject:Any?) in
+                NSLog("SUCCESS: \(operation.response!)")
+                //              TODO: this is really hacky way of fetching image, try to extract url from responseObject
+                let url:URL = URL(string: "http://\(self.address):8000/media/result.png")!
+                self.getData(from: url) { (data, response, error) in
+                    guard let data = data, error == nil else { return }
+                    print(response?.suggestedFilename ?? url.lastPathComponent)
+                    print("Download Finished")
+                    DispatchQueue.main.async() {
+                        self.result.image = UIImage(data: data)!
+                    }
+                }
+        },
+            failure:
+            { (operation:URLSessionDataTask?, error:Error) in
+                NSLog("FAILURE: \(error)")
+        })
     }
 }
