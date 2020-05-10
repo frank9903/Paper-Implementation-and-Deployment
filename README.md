@@ -24,7 +24,7 @@ More details can be found [here](https://medium.com/@shivamrawat_756/how-to-prev
   * https://github.com/matterport/Mask_RCNN.git
   * https://github.com/sunshineatnoon/IOS_UPLOAD_TO_DJANGO_DEMO.git
   * https://github.com/hollance/YOLO-CoreML-MPSNNGraph.git (Comparison Model)
-* Getting Started: Git clone this repo and open [My Mask RCNN.ipynb](https://github.com/shuheng-cao/Paper-Implementation-and-Deployment/blob/master/Mask%20RCNN/requirements.txt) using __Google Colab__ to run all cells in the notebook
+* Getting Started: Git clone this repo and open [My Mask RCNN.ipynb](https://github.com/shuheng-cao/Paper-Implementation-and-Deployment/blob/master/Mask%20RCNN/My_Mask_RCNN.ipynb) using __Google Colab__ to run all cells in the notebook
 * Deployment Method: __Local Server__
   * Local Inference Model Setup:
   ```
@@ -39,7 +39,7 @@ More details can be found [here](https://medium.com/@shivamrawat_756/how-to-prev
   cd myproject/
   python manage.py runserver 0.0.0.0:8000
   ```
-  Don't forget to change the IP Address defined in the beginning of [FirstViewController.swift](https://github.com/shuheng-cao/Paper-Implementation-and-Deployment/blob/master/Deployment/Deployment/FirstViewController.swift)
+  Don't forget to change the IP Address defined in the beginning of [FirstViewController.swift](https://github.com/shuheng-cao/Paper-Implementation-and-Deployment/blob/master/Deployment/Deployment/View%20Controllers/1st/FirstViewController.swift)
 * Presentation:
 
   <img src="https://github.com/shuheng-cao/Paper-Implementation-and-Deployment/blob/master/Mask RCNN/demo/IMG_253A54215DE1-1.jpeg" width="480" height="360" />
