@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		4713D8852480520E00233EBC /* Image Caption Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4713D8842480520E00233EBC /* Image Caption Controller.swift */; };
+		4713D88924805C4900233EBC /* idx2word.json in Resources */ = {isa = PBXBuildFile; fileRef = 4713D88824805C4800233EBC /* idx2word.json */; };
+		4713D88D24805C5100233EBC /* map.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 4713D88A24805C5000233EBC /* map.mlmodel */; };
+		4713D88E24805C5100233EBC /* gru.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 4713D88B24805C5100233EBC /* gru.mlmodel */; };
+		4713D88F24805C5100233EBC /* encoder.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 4713D88C24805C5100233EBC /* encoder.mlmodel */; };
 		C22EC668A6892199488036A1 /* Pods_Deployment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 731853FF0DCB423601F40B71 /* Pods_Deployment.framework */; };
 		FA567DA323985113006D2826 /* 3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FA567DA023985113006D2826 /* 3.jpg */; };
 		FA567DA423985113006D2826 /* 2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FA567DA123985113006D2826 /* 2.jpg */; };
@@ -35,6 +39,10 @@
 
 /* Begin PBXFileReference section */
 		4713D8842480520E00233EBC /* Image Caption Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image Caption Controller.swift"; sourceTree = "<group>"; };
+		4713D88824805C4800233EBC /* idx2word.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = idx2word.json; path = "../../../../Image Captioning/idx2word.json"; sourceTree = "<group>"; };
+		4713D88A24805C5000233EBC /* map.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = map.mlmodel; path = "../../../../Image Captioning/map.mlmodel"; sourceTree = "<group>"; };
+		4713D88B24805C5100233EBC /* gru.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = gru.mlmodel; path = "../../../../Image Captioning/gru.mlmodel"; sourceTree = "<group>"; };
+		4713D88C24805C5100233EBC /* encoder.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = encoder.mlmodel; path = "../../../../Image Captioning/encoder.mlmodel"; sourceTree = "<group>"; };
 		731853FF0DCB423601F40B71 /* Pods_Deployment.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Deployment.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E170CC116E818C3A34D2E92 /* Pods-Deployment.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Deployment.debug.xcconfig"; path = "Target Support Files/Pods-Deployment/Pods-Deployment.debug.xcconfig"; sourceTree = "<group>"; };
 		A57B3AD4D95E4515D6EDCCD3 /* Pods-Deployment.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Deployment.release.xcconfig"; path = "Target Support Files/Pods-Deployment/Pods-Deployment.release.xcconfig"; sourceTree = "<group>"; };
@@ -88,6 +96,10 @@
 		4713D8832480395A00233EBC /* Image Caption  */ = {
 			isa = PBXGroup;
 			children = (
+				4713D88C24805C5100233EBC /* encoder.mlmodel */,
+				4713D88B24805C5100233EBC /* gru.mlmodel */,
+				4713D88A24805C5000233EBC /* map.mlmodel */,
+				4713D88824805C4800233EBC /* idx2word.json */,
 				4713D8842480520E00233EBC /* Image Caption Controller.swift */,
 			);
 			path = "Image Caption ";
@@ -252,6 +264,7 @@
 			files = (
 				FA623E9923981E1A00E5941A /* LaunchScreen.storyboard in Resources */,
 				FA623E9623981E1A00E5941A /* Assets.xcassets in Resources */,
+				4713D88924805C4900233EBC /* idx2word.json in Resources */,
 				FACAB14E239C274500AB7659 /* camera.png in Resources */,
 				FACAB14C239B687700AB7659 /* download.png in Resources */,
 				FA567DA423985113006D2826 /* 2.jpg in Resources */,
@@ -315,11 +328,14 @@
 				FA623E9123981E1600E5941A /* TBC Controller.swift in Sources */,
 				FA623E8F23981E1600E5941A /* Mask RCNN Controller.swift in Sources */,
 				FACAB150239C4E6200AB7659 /* ImagePicker.swift in Sources */,
+				4713D88D24805C5100233EBC /* map.mlmodel in Sources */,
 				FA9E709B239C792800A54021 /* TinyYOLO.mlmodel in Sources */,
 				4713D8852480520E00233EBC /* Image Caption Controller.swift in Sources */,
 				FA9E70A1239C794B00A54021 /* Helpers.swift in Sources */,
+				4713D88F24805C5100233EBC /* encoder.mlmodel in Sources */,
 				FA9E70A4239C796A00A54021 /* BoundingBox.swift in Sources */,
 				FA623E8B23981E1600E5941A /* AppDelegate.swift in Sources */,
+				4713D88E24805C5100233EBC /* gru.mlmodel in Sources */,
 				FA9E70A5239C796A00A54021 /* CVPixelBuffer+Helpers.swift in Sources */,
 				FA9E70A7239C79BB00A54021 /* Default_YOLO.swift in Sources */,
 				FA9E709D239C793A00A54021 /* YOLO.swift in Sources */,

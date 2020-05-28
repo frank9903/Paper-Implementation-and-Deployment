@@ -131,13 +131,22 @@
                                     <action selector="pickImage:" destination="8rJ-Kc-sve" eventType="touchUpInside" id="iGs-gI-ThB"/>
                                 </connections>
                             </button>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Upload an image for caption generation." textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="uwG-BE-p4f">
+                                <rect key="frame" x="334" y="836" width="905" height="80"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="hQH-7v-81w" firstAttribute="top" secondItem="rup-Hu-Oiw" secondAttribute="bottom" constant="97" id="4ZW-z3-4gJ"/>
                             <constraint firstItem="hQH-7v-81w" firstAttribute="leading" secondItem="O1u-W8-tvY" secondAttribute="leading" constant="127" id="D4w-ex-zNW"/>
+                            <constraint firstItem="uwG-BE-p4f" firstAttribute="leading" secondItem="hQH-7v-81w" secondAttribute="trailing" constant="127" id="ERs-cU-bC1"/>
+                            <constraint firstItem="O1u-W8-tvY" firstAttribute="trailing" secondItem="uwG-BE-p4f" secondAttribute="trailing" constant="127" id="F5t-5Q-atn"/>
+                            <constraint firstItem="uwG-BE-p4f" firstAttribute="bottom" secondItem="hQH-7v-81w" secondAttribute="bottom" id="U7Z-zt-CfC"/>
                             <constraint firstItem="rup-Hu-Oiw" firstAttribute="trailing" secondItem="QS5-Rx-YEW" secondAttribute="trailingMargin" id="Yob-qS-kNa"/>
                             <constraint firstItem="rup-Hu-Oiw" firstAttribute="top" secondItem="O1u-W8-tvY" secondAttribute="top" constant="20" id="bnb-vw-Tpm"/>
+                            <constraint firstItem="uwG-BE-p4f" firstAttribute="top" secondItem="hQH-7v-81w" secondAttribute="top" id="css-J8-mwW"/>
                             <constraint firstItem="rup-Hu-Oiw" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leadingMargin" id="eHc-oJ-mCd"/>
                             <constraint firstItem="O1u-W8-tvY" firstAttribute="bottom" secondItem="hQH-7v-81w" secondAttribute="bottom" constant="43" id="iq3-aH-Obx"/>
                             <constraint firstItem="O1u-W8-tvY" firstAttribute="bottom" secondItem="rup-Hu-Oiw" secondAttribute="bottom" constant="220" id="oDe-aF-c2p"/>
@@ -146,12 +155,13 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Image Caption" image="i.circle" catalog="system" id="cPa-gy-q4n"/>
                     <connections>
-                        <outlet property="result" destination="rup-Hu-Oiw" id="zC7-Qe-xtp"/>
+                        <outlet property="input" destination="rup-Hu-Oiw" id="hmY-P3-xMF"/>
+                        <outlet property="result" destination="uwG-BE-p4f" id="qRT-l1-IyT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="750" y="360"/>
+            <point key="canvasLocation" x="749.78038067349917" y="359.765625"/>
         </scene>
         <!--TBC-->
         <scene sceneID="5r2-gs-72I">
