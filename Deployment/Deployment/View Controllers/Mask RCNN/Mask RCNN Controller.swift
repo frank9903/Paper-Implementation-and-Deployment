@@ -11,7 +11,7 @@ import AFNetworking
 import CoreML
 import Vision
 
-class FirstViewController: UIViewController {
+class MaskRCNNController: UIViewController {
     @IBOutlet weak var result: UIImageView!
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var button: UIButton!
@@ -97,7 +97,7 @@ class FirstViewController: UIViewController {
 
 
 // for method selector
-extension FirstViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+extension MaskRCNNController: UIPickerViewDelegate, UIPickerViewDataSource {
     // UIPickerViewDelegate
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -115,7 +115,7 @@ extension FirstViewController: UIPickerViewDelegate, UIPickerViewDataSource {
 }
 
 // image picker
-extension FirstViewController: ImagePickerDelegate {
+extension MaskRCNNController: ImagePickerDelegate {
     
     func didSelect(image: UIImage?) {
         if image != nil {
@@ -125,7 +125,7 @@ extension FirstViewController: ImagePickerDelegate {
 }
 
 // loading view
-extension FirstViewController {
+extension MaskRCNNController {
     func initLoadingView() {
         // set up the constraint for loading view programmatically
         maskView = UIView()
@@ -234,7 +234,7 @@ extension FirstViewController {
 }
 
 // predictions
-extension FirstViewController {
+extension MaskRCNNController {
     // default prediction
     func defaultPredict() {
         let predictions = defaultModel.predict(image: result.image!)
