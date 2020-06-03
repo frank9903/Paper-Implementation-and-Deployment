@@ -3,8 +3,9 @@
 ## Introduction
 This repo is not meant to exactly reproduce the paper results but instead, what I want to achieve is to understand and visualize paper models without tedious environment setups. To do so, I'm going to build, train and validate the models all in __Google Colab__. On top of that, this repo will also focus on various ways of deploying the models (for iOS), including but not limited to:
 1. Use local server and HTTP request
-2. Convert FastAI/Pytorch model to CoreML model
-3. Convert Keras/TensorFlow model to CoreML model 
+2. Convert Pytorch model to CoreML model
+3. Convert TensorFlow model to CoreML model 
+4. Use Turi Create to train and deploy model
 
 ***Colab tips: In order to keep Colab from disconnecting, add the following to your browser console.***
 ```
@@ -39,7 +40,7 @@ More details can be found [here](https://medium.com/@shivamrawat_756/how-to-prev
   cd myproject/
   python manage.py runserver 0.0.0.0:8000
   ```
-  Don't forget to change the IP Address defined in the beginning of [FirstViewController.swift](https://github.com/shuheng-cao/Paper-Implementation-and-Deployment/blob/master/Deployment/Deployment/View%20Controllers/1st/FirstViewController.swift)
+  Don't forget to change the IP Address defined in the beginning of [Mask RCNN Controller.swift](https://github.com/shuheng-cao/Paper-Implementation-and-Deployment/blob/master/Deployment/Deployment/View%20Controllers/Mask%20RCNN/Mask%20RCNN%20Controller.swift)
 * Presentation:
 
   <img src="https://github.com/shuheng-cao/Paper-Implementation-and-Deployment/blob/master/Mask RCNN/demo/IMG_253A54215DE1-1.jpeg" width="480" height="360" />
