@@ -36,7 +36,7 @@ class MaskRCNNController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        selectorData = ["Apple Default", "Customized"]
+        selectorData = ["YOLO", "Mask RCNN"]
         self.selector.delegate = self
         self.selector.dataSource = self
         self.button.layer.cornerRadius = 20

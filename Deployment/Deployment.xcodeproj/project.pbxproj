@@ -12,6 +12,10 @@
 		4713D88D24805C5100233EBC /* map.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 4713D88A24805C5000233EBC /* map.mlmodel */; };
 		4713D88E24805C5100233EBC /* gru.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 4713D88B24805C5100233EBC /* gru.mlmodel */; };
 		4713D88F24805C5100233EBC /* encoder.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 4713D88C24805C5100233EBC /* encoder.mlmodel */; };
+		4753C3002493CF7B001064E1 /* sketch_70.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 4753C2FF2493CF7B001064E1 /* sketch_70.mlmodel */; };
+		4753C3022493D02F001064E1 /* CustomPickerDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C3012493D02F001064E1 /* CustomPickerDelegates.swift */; };
+		4753C3042493D06D001064E1 /* UIImageConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C3032493D06D001064E1 /* UIImageConversion.swift */; };
+		478A444B2491CAA600C160AF /* Style Transfer Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478A444A2491CAA600C160AF /* Style Transfer Controller.swift */; };
 		C22EC668A6892199488036A1 /* Pods_Deployment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 731853FF0DCB423601F40B71 /* Pods_Deployment.framework */; };
 		FA567DA323985113006D2826 /* 3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FA567DA023985113006D2826 /* 3.jpg */; };
 		FA567DA423985113006D2826 /* 2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FA567DA123985113006D2826 /* 2.jpg */; };
@@ -43,6 +47,10 @@
 		4713D88A24805C5000233EBC /* map.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = map.mlmodel; path = "../../../../Image Captioning/map.mlmodel"; sourceTree = "<group>"; };
 		4713D88B24805C5100233EBC /* gru.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = gru.mlmodel; path = "../../../../Image Captioning/gru.mlmodel"; sourceTree = "<group>"; };
 		4713D88C24805C5100233EBC /* encoder.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = encoder.mlmodel; path = "../../../../Image Captioning/encoder.mlmodel"; sourceTree = "<group>"; };
+		4753C2FF2493CF7B001064E1 /* sketch_70.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = sketch_70.mlmodel; sourceTree = "<group>"; };
+		4753C3012493D02F001064E1 /* CustomPickerDelegates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPickerDelegates.swift; sourceTree = "<group>"; };
+		4753C3032493D06D001064E1 /* UIImageConversion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageConversion.swift; sourceTree = "<group>"; };
+		478A444A2491CAA600C160AF /* Style Transfer Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Style Transfer Controller.swift"; sourceTree = "<group>"; };
 		731853FF0DCB423601F40B71 /* Pods_Deployment.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Deployment.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E170CC116E818C3A34D2E92 /* Pods-Deployment.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Deployment.debug.xcconfig"; path = "Target Support Files/Pods-Deployment/Pods-Deployment.debug.xcconfig"; sourceTree = "<group>"; };
 		A57B3AD4D95E4515D6EDCCD3 /* Pods-Deployment.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Deployment.release.xcconfig"; path = "Target Support Files/Pods-Deployment/Pods-Deployment.release.xcconfig"; sourceTree = "<group>"; };
@@ -103,6 +111,17 @@
 				4713D8842480520E00233EBC /* Image Caption Controller.swift */,
 			);
 			path = "Image Caption ";
+			sourceTree = "<group>";
+		};
+		478A44492491CA8A00C160AF /* Style Transfer */ = {
+			isa = PBXGroup;
+			children = (
+				4753C2FF2493CF7B001064E1 /* sketch_70.mlmodel */,
+				478A444A2491CAA600C160AF /* Style Transfer Controller.swift */,
+				4753C3012493D02F001064E1 /* CustomPickerDelegates.swift */,
+				4753C3032493D06D001064E1 /* UIImageConversion.swift */,
+			);
+			path = "Style Transfer";
 			sourceTree = "<group>";
 		};
 		7B4FD2E32F48A0167D5E3099 /* Frameworks */ = {
@@ -177,6 +196,7 @@
 		FACAB157239C776800AB7659 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				478A44492491CA8A00C160AF /* Style Transfer */,
 				4713D8832480395A00233EBC /* Image Caption  */,
 				FACAB159239C780B00AB7659 /* Mask RCNN */,
 				FACAB15A239C781D00AB7659 /* TBD */,
@@ -325,6 +345,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4753C3022493D02F001064E1 /* CustomPickerDelegates.swift in Sources */,
 				FA623E9123981E1600E5941A /* TBC Controller.swift in Sources */,
 				FA623E8F23981E1600E5941A /* Mask RCNN Controller.swift in Sources */,
 				FACAB150239C4E6200AB7659 /* ImagePicker.swift in Sources */,
@@ -334,7 +355,10 @@
 				FA9E70A1239C794B00A54021 /* Helpers.swift in Sources */,
 				4713D88F24805C5100233EBC /* encoder.mlmodel in Sources */,
 				FA9E70A4239C796A00A54021 /* BoundingBox.swift in Sources */,
+				478A444B2491CAA600C160AF /* Style Transfer Controller.swift in Sources */,
 				FA623E8B23981E1600E5941A /* AppDelegate.swift in Sources */,
+				4753C3002493CF7B001064E1 /* sketch_70.mlmodel in Sources */,
+				4753C3042493D06D001064E1 /* UIImageConversion.swift in Sources */,
 				4713D88E24805C5100233EBC /* gru.mlmodel in Sources */,
 				FA9E70A5239C796A00A54021 /* CVPixelBuffer+Helpers.swift in Sources */,
 				FA9E70A7239C79BB00A54021 /* Default_YOLO.swift in Sources */,
@@ -492,7 +516,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.mycompany.Deployment;
+				PRODUCT_BUNDLE_IDENTIFIER = MRD.Deployment;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 2;
@@ -511,7 +535,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.mycompany.Deployment;
+				PRODUCT_BUNDLE_IDENTIFIER = MRD.Deployment;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 2;
