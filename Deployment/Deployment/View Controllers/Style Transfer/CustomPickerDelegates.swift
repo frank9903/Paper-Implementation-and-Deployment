@@ -11,6 +11,8 @@ import UIKit
 
 class ModelPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegate {
     let models = ["Pytorch Model", "Turi Create Model"]
+    var inference: InferenceDelegate? = nil
+    
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -19,15 +21,19 @@ class ModelPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegat
         return models.count
     }
     
-    // UIPickerViewDataSource
     func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
-        
         return NSAttributedString(string: models[row], attributes: [NSAttributedString.Key.foregroundColor:UIColor.white])
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        inference?.update()
     }
 }
 
 class StylePickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegate {
-    let styles = ["Starry Night", "Scream", "Sketch", "The Muse"]
+    let styles = ["The Muse", "Starry Night", "Scream", "Sketch"]
+    var inference: InferenceDelegate? = nil
+    
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -36,15 +42,20 @@ class StylePickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegat
         return styles.count
     }
     
-    // UIPickerViewDataSource
     func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
         
         return NSAttributedString(string: styles[row], attributes: [NSAttributedString.Key.foregroundColor:UIColor.white])
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        inference?.update()
     }
 }
 
 class IntensityPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegate {
     let intensities = ["High", "Medium", "Low"]
+    var inference: InferenceDelegate? = nil
+    
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -57,6 +68,10 @@ class IntensityPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDel
     func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
         
         return NSAttributedString(string: intensities[row], attributes: [NSAttributedString.Key.foregroundColor:UIColor.white])
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        inference?.update()
     }
 }
 

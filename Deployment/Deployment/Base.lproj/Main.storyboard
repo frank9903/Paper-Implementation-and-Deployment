@@ -233,6 +233,56 @@
                                     <constraint firstAttribute="width" constant="216" id="Cct-DV-StK"/>
                                 </constraints>
                             </pickerView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FDy-rS-dbS">
+                                <rect key="frame" x="575" y="747" width="216" height="42"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="9Lh-BV-y3l"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="216" id="PAn-I9-dLa"/>
+                                    <constraint firstAttribute="width" constant="216" id="xzc-X0-fdG"/>
+                                </constraints>
+                                <attributedString key="attributedText">
+                                    <fragment content="Style">
+                                        <attributes>
+                                            <font key="NSFont" size="36" name="AmericanTypewriter"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ye2-hj-vKP">
+                                <rect key="frame" x="799" y="747" width="216" height="42"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="SFm-vR-GiF"/>
+                                    <constraint firstAttribute="width" constant="216" id="w7Z-JZ-oVn"/>
+                                </constraints>
+                                <attributedString key="attributedText">
+                                    <fragment content="Intensity">
+                                        <attributes>
+                                            <font key="NSFont" size="36" name="AmericanTypewriter"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="utR-9u-ktZ">
+                                <rect key="frame" x="351" y="747" width="216" height="42"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="EfQ-DW-KhR"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="216" id="HPQ-ip-QhR"/>
+                                    <constraint firstAttribute="width" constant="216" id="dvD-V6-Vay"/>
+                                </constraints>
+                                <attributedString key="attributedText">
+                                    <fragment content="Version">
+                                        <attributes>
+                                            <font key="NSFont" size="36" name="AmericanTypewriter"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <constraints>
@@ -240,6 +290,7 @@
                             <constraint firstItem="UJY-Ry-mPd" firstAttribute="trailing" secondItem="tUE-aw-Wvc" secondAttribute="trailing" constant="127" id="5cN-5L-LKA"/>
                             <constraint firstItem="zSb-yD-w4q" firstAttribute="top" secondItem="PBq-ja-vWW" secondAttribute="top" id="6Vh-sQ-vYU"/>
                             <constraint firstItem="zSb-yD-w4q" firstAttribute="leading" secondItem="XOv-8G-NVC" secondAttribute="trailing" constant="8" id="9tp-Be-dwG"/>
+                            <constraint firstItem="ye2-hj-vKP" firstAttribute="centerX" secondItem="PBq-ja-vWW" secondAttribute="centerX" id="C2y-NQ-jAT"/>
                             <constraint firstItem="Zhh-WO-SeE" firstAttribute="trailing" secondItem="MO6-Ud-rnQ" secondAttribute="trailingMargin" id="ED6-DA-m73"/>
                             <constraint firstItem="XOv-8G-NVC" firstAttribute="top" secondItem="Zhh-WO-SeE" secondAttribute="bottom" constant="29" id="IwY-8t-7kX"/>
                             <constraint firstItem="ke3-d9-Zt4" firstAttribute="centerY" secondItem="XOv-8G-NVC" secondAttribute="centerY" id="JJD-QC-h0R"/>
@@ -249,7 +300,12 @@
                             <constraint firstItem="PBq-ja-vWW" firstAttribute="leading" secondItem="zSb-yD-w4q" secondAttribute="trailing" constant="8" id="WtG-iA-pJq"/>
                             <constraint firstItem="Zhh-WO-SeE" firstAttribute="leading" secondItem="MO6-Ud-rnQ" secondAttribute="leadingMargin" id="g9S-AX-vJq"/>
                             <constraint firstItem="Zhh-WO-SeE" firstAttribute="centerX" secondItem="zSb-yD-w4q" secondAttribute="centerX" id="iVU-Rg-d1k"/>
+                            <constraint firstItem="utR-9u-ktZ" firstAttribute="top" secondItem="Zhh-WO-SeE" secondAttribute="bottom" constant="8" id="lBT-jF-JLc"/>
+                            <constraint firstItem="FDy-rS-dbS" firstAttribute="centerX" secondItem="zSb-yD-w4q" secondAttribute="centerX" id="mjN-mJ-faO"/>
+                            <constraint firstItem="utR-9u-ktZ" firstAttribute="baseline" secondItem="ye2-hj-vKP" secondAttribute="baseline" id="qnF-9Q-9fF"/>
+                            <constraint firstItem="utR-9u-ktZ" firstAttribute="centerX" secondItem="XOv-8G-NVC" secondAttribute="centerX" id="rRw-bA-oLx"/>
                             <constraint firstItem="XOv-8G-NVC" firstAttribute="top" secondItem="zSb-yD-w4q" secondAttribute="top" id="scx-h9-L4r"/>
+                            <constraint firstItem="utR-9u-ktZ" firstAttribute="baseline" secondItem="FDy-rS-dbS" secondAttribute="baseline" id="uzj-KW-rhG"/>
                             <constraint firstItem="ke3-d9-Zt4" firstAttribute="leading" secondItem="UJY-Ry-mPd" secondAttribute="leading" constant="127" id="y9M-Jf-zZO"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="UJY-Ry-mPd"/>
