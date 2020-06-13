@@ -67,6 +67,7 @@ class StyleTransferController: UIViewController {
 
         modelPicker.delegate = modelPickerDelegate
         modelPicker.dataSource = modelPickerDelegate
+        modelPicker.selectRow(1, inComponent: 0, animated: false)
         stylePicker.delegate = stylePickerDelegate
         stylePicker.dataSource = stylePickerDelegate
         stylePicker.selectRow(3, inComponent: 0, animated: false)
@@ -124,7 +125,7 @@ extension StyleTransferController: InferenceDelegate {
         let style = stylePicker.selectedRow(inComponent: 0)
         let intensity = intensityPicker.selectedRow(inComponent: 0)
         
-        if model == 0 {
+        if model == 1 {
             // pytorch model
             // enable intensity selection
             intensityPicker.isUserInteractionEnabled = true

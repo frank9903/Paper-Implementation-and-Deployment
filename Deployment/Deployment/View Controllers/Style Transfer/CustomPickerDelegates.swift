@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 class ModelPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegate {
-    let models = ["Pytorch Model", "Turi Create Model"]
+    let models = ["Turi Create Model", "Pytorch Model"]
     var inference: InferenceDelegate? = nil
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
