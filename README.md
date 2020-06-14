@@ -42,6 +42,7 @@ Please keep track of [this thread](https://stackoverflow.com/questions/57113226/
   ```
   Don't forget to change the IP Address defined in the beginning of [Mask RCNN Controller.swift](https://github.com/shuheng-cao/Paper-Implementation-and-Deployment/blob/master/Deployment/Deployment/View%20Controllers/Mask%20RCNN/Mask%20RCNN%20Controller.swift)
 * Presentation:
+
   <img src="https://github.com/shuheng-cao/Paper-Implementation-and-Deployment/blob/master/Mask RCNN/demo/ezgif.com-video-to-gif.gif" width="480" height="360" />
   
  ### Image Captioning [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/13jxlrfvYapTNGItR38ilnDqhzknZvWug?usp=sharing)
