@@ -25,7 +25,7 @@ Please keep track of [this thread](https://stackoverflow.com/questions/57113226/
   * https://github.com/matterport/Mask_RCNN.git
   * https://github.com/sunshineatnoon/IOS_UPLOAD_TO_DJANGO_DEMO.git
   * https://github.com/hollance/YOLO-CoreML-MPSNNGraph.git (Comparison Model)
-* Getting Started: Git clone this repo and upload [My Mask RCNN.ipynb](https://github.com/shuheng-cao/Paper-Implementation-and-Deployment/blob/master/Mask%20RCNN/My_Mask_RCNN.ipynb) to __Google Colab__ and run all cells in the notebook
+* Getting Started: Click on `Open In Colab` button above (or upload [My Mask RCNN.ipynb](https://github.com/shuheng-cao/Paper-Implementation-and-Deployment/blob/master/Mask%20RCNN/My_Mask_RCNN.ipynb) to __Google Colab__) and run all cells in the notebook
 * Deployment Method: __Local Server__
   * Local Inference Model Setup:
   ```
