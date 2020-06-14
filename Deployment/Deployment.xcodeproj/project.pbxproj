@@ -12,10 +12,10 @@
 		4713D88D24805C5100233EBC /* map.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 4713D88A24805C5000233EBC /* map.mlmodel */; };
 		4713D88E24805C5100233EBC /* gru.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 4713D88B24805C5100233EBC /* gru.mlmodel */; };
 		4713D88F24805C5100233EBC /* encoder.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 4713D88C24805C5100233EBC /* encoder.mlmodel */; };
+		4723212D249697150045FA82 /* muse_7.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 4723212C249697150045FA82 /* muse_7.mlmodel */; };
 		4753C3022493D02F001064E1 /* CustomPickerDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C3012493D02F001064E1 /* CustomPickerDelegates.swift */; };
 		4753C3042493D06D001064E1 /* UIImageConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C3032493D06D001064E1 /* UIImageConversion.swift */; };
 		4753C3082493DB11001064E1 /* turicreate_model.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 4753C3072493DB11001064E1 /* turicreate_model.mlmodel */; };
-		4753C3162493DB22001064E1 /* muse_40.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 4753C30A2493DB22001064E1 /* muse_40.mlmodel */; };
 		4753C3172493DB22001064E1 /* scream_30.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 4753C30B2493DB22001064E1 /* scream_30.mlmodel */; };
 		4753C3182493DB22001064E1 /* sketch_70.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 4753C30C2493DB22001064E1 /* sketch_70.mlmodel */; };
 		4753C3192493DB22001064E1 /* muse_30.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 4753C30D2493DB22001064E1 /* muse_30.mlmodel */; };
@@ -59,10 +59,10 @@
 		4713D88A24805C5000233EBC /* map.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = map.mlmodel; path = "../../../../Image Captioning/map.mlmodel"; sourceTree = "<group>"; };
 		4713D88B24805C5100233EBC /* gru.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = gru.mlmodel; path = "../../../../Image Captioning/gru.mlmodel"; sourceTree = "<group>"; };
 		4713D88C24805C5100233EBC /* encoder.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = encoder.mlmodel; path = "../../../../Image Captioning/encoder.mlmodel"; sourceTree = "<group>"; };
+		4723212C249697150045FA82 /* muse_7.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = muse_7.mlmodel; sourceTree = "<group>"; };
 		4753C3012493D02F001064E1 /* CustomPickerDelegates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPickerDelegates.swift; sourceTree = "<group>"; };
 		4753C3032493D06D001064E1 /* UIImageConversion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageConversion.swift; sourceTree = "<group>"; };
 		4753C3072493DB11001064E1 /* turicreate_model.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = turicreate_model.mlmodel; sourceTree = "<group>"; };
-		4753C30A2493DB22001064E1 /* muse_40.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = muse_40.mlmodel; sourceTree = "<group>"; };
 		4753C30B2493DB22001064E1 /* scream_30.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = scream_30.mlmodel; sourceTree = "<group>"; };
 		4753C30C2493DB22001064E1 /* sketch_70.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = sketch_70.mlmodel; sourceTree = "<group>"; };
 		4753C30D2493DB22001064E1 /* muse_30.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = muse_30.mlmodel; sourceTree = "<group>"; };
@@ -140,7 +140,7 @@
 		4753C3092493DB22001064E1 /* torch models */ = {
 			isa = PBXGroup;
 			children = (
-				4753C30A2493DB22001064E1 /* muse_40.mlmodel */,
+				4723212C249697150045FA82 /* muse_7.mlmodel */,
 				4753C30B2493DB22001064E1 /* scream_30.mlmodel */,
 				4753C30C2493DB22001064E1 /* sketch_70.mlmodel */,
 				4753C30D2493DB22001064E1 /* muse_30.mlmodel */,
@@ -402,7 +402,6 @@
 				FACAB150239C4E6200AB7659 /* ImagePicker.swift in Sources */,
 				4713D88D24805C5100233EBC /* map.mlmodel in Sources */,
 				4753C3182493DB22001064E1 /* sketch_70.mlmodel in Sources */,
-				4753C3162493DB22001064E1 /* muse_40.mlmodel in Sources */,
 				FA9E709B239C792800A54021 /* TinyYOLO.mlmodel in Sources */,
 				4713D8852480520E00233EBC /* Image Caption Controller.swift in Sources */,
 				4753C3192493DB22001064E1 /* muse_30.mlmodel in Sources */,
@@ -420,6 +419,7 @@
 				4753C3202493DB22001064E1 /* night_50.mlmodel in Sources */,
 				4753C31F2493DB22001064E1 /* scream_100.mlmodel in Sources */,
 				FA623E8D23981E1600E5941A /* SceneDelegate.swift in Sources */,
+				4723212D249697150045FA82 /* muse_7.mlmodel in Sources */,
 				FA9E709F239C794200A54021 /* UIImage+CVPixelBuffer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

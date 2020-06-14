@@ -26,6 +26,13 @@ class StyleTransferController: UIViewController {
     var imageExist = false
     // check if user has read the alert
     var alertRead = false
+    // some styles are bad at handling some specific scenes
+    // NOTE: the name of classes can be found using
+    //       VNClassifiyImageRequest.knownClassifications(forRevision: VNClassifyImageRequestRevision1)
+    let UNEXPECT_CONTENT = [["outdoor"],                // The Muse
+                            ["people", "structure"],    // Starry Night
+                            ["people", "animal"],       // Scream
+                            []]                         // Sketch
     
     // MARK: Slider Variables
     fileprivate lazy var resultView: UIImageView = {
@@ -67,13 +74,15 @@ class StyleTransferController: UIViewController {
 
         modelPicker.delegate = modelPickerDelegate
         modelPicker.dataSource = modelPickerDelegate
-        modelPicker.selectRow(1, inComponent: 0, animated: false)
         stylePicker.delegate = stylePickerDelegate
         stylePicker.dataSource = stylePickerDelegate
-        stylePicker.selectRow(3, inComponent: 0, animated: false)
         intensityPicker.delegate = intensityPickerDelegate
         intensityPicker.dataSource = intensityPickerDelegate
-        intensityPicker.selectRow(2, inComponent: 0, animated: false)
+        
+        // set the selected row to the last row
+        modelPicker.selectRow(modelPicker.numberOfRows(inComponent: 0)-1, inComponent: 0, animated: false)
+        stylePicker.selectRow(stylePicker.numberOfRows(inComponent: 0)-1, inComponent: 0, animated: false)
+        intensityPicker.selectRow(intensityPicker.numberOfRows(inComponent: 0)-1, inComponent: 0, animated: false)
         
         modelPickerDelegate.inference = self
         stylePickerDelegate.inference = self
@@ -164,11 +173,29 @@ extension StyleTransferController: InferenceDelegate {
             let result = try? turiModel.prediction(image: input.image!.pixelBuffer(to: expectSize)!, index: styleArray!)
             resultView.image = UIImage(pixelBuffer: (result?.stylizedImage)!).resized(to: originSize)
         }
+        checkContent(for: style)
     }
     
     func trochResultHandler(request: VNRequest, error: Error?) {
         let results = request.results![0] as! VNPixelBufferObservation
         resultView.image = UIImage(pixelBuffer: results.pixelBuffer).resized(to: originSize)
+    }
+    
+    func checkContent(for style: Int) {
+        let handler = VNImageRequestHandler(cgImage: (input.image?.cgImage)!, options: [:])
+        let request = VNClassifyImageRequest()
+        try? handler.perform([request])
+        let results = request.results as? [VNClassificationObservation]
+        let observations = results!.filter{ $0.hasMinimumPrecision(0.75, forRecall: 0.75) }
+        for observation in observations {
+            if UNEXPECT_CONTENT[style].contains(observation.identifier) {
+                let ac = UIAlertController(title: "Content Warning",
+                                           message: "\(observation.identifier) objects are detected in the image, which may yield bad result. Please consider change photo or style.",
+                                            preferredStyle: .alert)
+                ac.addAction(UIAlertAction(title: "OK", style: .default))
+                present(ac, animated: true)
+            }
+        }
     }
 }
 
@@ -250,9 +277,9 @@ extension StyleTransferController {
     func initTorchModels() {
         var styleDict:[Int:VNCoreMLModel] = [:]
         // the muse
-        styleDict[0] = try! VNCoreMLModel(for: muse_40().model)
-        styleDict[1] = try! VNCoreMLModel(for: muse_30().model)
-        styleDict[2] = try! VNCoreMLModel(for: muse_20().model)
+        styleDict[0] = try! VNCoreMLModel(for: muse_30().model)
+        styleDict[1] = try! VNCoreMLModel(for: muse_20().model)
+        styleDict[2] = try! VNCoreMLModel(for: muse_7().model)
         torchModel[0] = styleDict
         
         // starry nights
